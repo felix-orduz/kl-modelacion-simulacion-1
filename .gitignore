@@ -1,0 +1,27 @@
+# entorno conda: se reconstruye desde environment.yml
+.conda/
+envs/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# artefactos de compilación (Cython, ctypes, OpenMP)
+*.so
+*.dylib
+*.o
+*.a
+build/
+dist/
+*.egg-info/
+
+# perfilado
+*.prof
+*.lprof
+
+# datos grandes: versionar solo muestras pequeñas
+datos/*.csv
+datos/*.parquet
+!datos/muestra-*.csv

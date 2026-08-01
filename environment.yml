@@ -1,0 +1,19 @@
+name: kl-ms1
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+
+  # base común a las materias con código
+  - numpy
+  - matplotlib
+  - jupyterlab
+  - ipykernel
+  - pytest
+
+  # específico de MS1, declarado en programa.md
+  - pandas
+  - scipy
+  - scikit-learn
+  - statsmodels
+  - seaborn
