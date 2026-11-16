@@ -1,0 +1,251 @@
+\documentclass[12pt]{article}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{array}
+\usepackage{geometry}
+\usepackage{multirow}
+\geometry{a4paper, margin=2.5cm}
+
+\title{Métricas de Evaluación para Clasificación}
+\author{Modelado y simulación I}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Matriz de Confusión}
+
+La matriz de confusión es la base para todas las métricas de clasificación. Para un problema de clasificación binaria, se define:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c|c|c|}
+\cline{3-3}
+\multicolumn{2}{c|}{} & \multicolumn{2}{c}{Predicción} \\
+\cline{3-4}
+\multicolumn{2}{c|}{} & Positivo & Negativo \\
+\cline{2-4}
+\multirow{2}{*}{Real} & Positivo & VP & FN \\
+\cline{2-4}
+& Negativo & FP & VN \\
+\cline{2-4}
+\end{tabular}
+\caption{Matriz de Confusión para Clasificación Binaria}
+\end{table}
+
+donde:
+\begin{itemize}
+\item $VP$: Verdaderos Positivos (clase positiva correctamente clasificada)
+\item $VN$: Verdaderos Negativos (clase negativa correctamente clasificada)
+\item $FP$: Falsos Positivos (clase negativa clasificada como positiva)
+\item $FN$: Falsos Negativos (clase positiva clasificada como negativa)
+\end{itemize}
+
+%\section{Métricas por Clase}
+
+\subsection{Precisión (Precision)}
+
+Mide la proporción de predicciones positivas que son correctas:
+
+\begin{equation}
+\text{Precision} = \frac{VP}{VP + FP}
+\end{equation}
+
+Interpretación: De todas las muestras que el modelo clasificó como positivas, ¿cuántas realmente lo son?
+
+\subsection{Recall (Sensibilidad)}
+
+Mide la proporción de muestras positivas que fueron correctamente identificadas:
+
+\begin{equation}
+\text{Recall} = \frac{VP}{VP + FN}
+\end{equation}
+
+Interpretación: De todas las muestras realmente positivas, ¿cuántas detectó el modelo?
+
+\subsection{F1-Score}
+
+Es la media armónica entre precisión y recall:
+
+\begin{equation}
+F_1 = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}} = \frac{2VP}{2VP + FP + FN}
+\end{equation}
+
+La media armónica penaliza valores extremos, dando un balance entre ambas métricas.
+
+\subsection{Soporte}
+
+El soporte es simplemente el número de muestras reales de cada clase:
+
+\begin{equation}
+\text{Soporte}_c = \text{Número de muestras de la clase } c
+\end{equation}
+
+\section{Promedios Globales}
+
+Para un problema de clasificación con $C$ clases, donde para cada clase $c$ tenemos:
+\begin{itemize}
+\item $P_c$: Precisión de la clase $c$
+\item $R_c$: Recall de la clase $c$
+\item $F_c$: F1-Score de la clase $c$
+\item $S_c$: Soporte de la clase $c$ (número de muestras reales)
+\end{itemize}
+
+\subsection{Promedio Macro (Macro Avg)}
+
+El promedio macro calcula la media aritmética simple de las métricas de cada clase, dando el mismo peso a todas las clases independientemente de su tamaño:
+
+\begin{equation}
+\text{Precision}_{\text{macro}} = \frac{1}{C} \sum_{c=1}^{C} P_c
+\end{equation}
+
+\begin{equation}
+\text{Recall}_{\text{macro}} = \frac{1}{C} \sum_{c=1}^{C} R_c
+\end{equation}
+
+\begin{equation}
+F_{1,\text{macro}} = \frac{1}{C} \sum_{c=1}^{C} F_c
+\end{equation}
+
+\textbf{Propiedades:}
+\begin{itemize}
+\item Cada clase contribuye con igual peso
+\item Útil cuando todas las clases son igualmente importantes
+\item No se ve afectado por el desbalance de clases
+\end{itemize}
+
+\subsection{Promedio Ponderado (Weighted Avg)}
+
+El promedio ponderado calcula la media de las métricas ponderada por el soporte de cada clase:
+
+\begin{equation}
+\text{Precision}_{\text{weighted}} = \frac{\sum_{c=1}^{C} P_c \cdot S_c}{\sum_{c=1}^{C} S_c}
+\end{equation}
+
+\begin{equation}
+\text{Recall}_{\text{weighted}} = \frac{\sum_{c=1}^{C} R_c \cdot S_c}{\sum_{c=1}^{C} S_c}
+\end{equation}
+
+\begin{equation}
+F_{1,\text{weighted}} = \frac{\sum_{c=1}^{C} F_c \cdot S_c}{\sum_{c=1}^{C} S_c}
+\end{equation}
+
+\textbf{Propiedades:}
+\begin{itemize}
+\item Las clases con mayor soporte tienen mayor influencia
+\item Refleja el rendimiento global del modelo en el dataset
+\item Útil cuando se quiere evaluar el desempeño en la distribución real
+\end{itemize}
+
+\section{Exactitud (Accuracy)}
+
+La exactitud es la proporción de predicciones correctas sobre el total:
+
+\begin{equation}
+\text{Accuracy} = \frac{VP + VN}{VP + VN + FP + FN}
+\end{equation}
+
+Para múltiples clases:
+
+\begin{equation}
+\text{Accuracy} = \frac{\sum_{c=1}^{C} VP_c}{\sum_{c=1}^{C} (VP_c + FN_c)}
+\end{equation}
+
+donde $VP_c$ son los verdaderos positivos de la clase $c$ y $FN_c$ son los falsos negativos.
+
+\textbf{Limitación:} En datasets desbalanceados, la exactitud puede ser engañosa, ya que puede estar dominada por la clase mayoritaria.
+
+\section{Validación Cruzada para Estimación de Precisión}
+
+La precisión del modelo k-NN (y cualquier modelo de machine learning) se estima mediante validación cruzada. Para $k$ folds:
+
+\begin{equation}
+\text{Accuracy}_{\text{CV}} = \frac{1}{k} \sum_{i=1}^{k} \text{Accuracy}_i
+\end{equation}
+
+donde $\text{Accuracy}_i$ es la exactitud en el fold $i$.
+
+La desviación estándar de las exactitudes proporciona una medida de la variabilidad:
+
+\begin{equation}
+\sigma_{\text{CV}} = \sqrt{\frac{1}{k-1} \sum_{i=1}^{k} (\text{Accuracy}_i - \text{Accuracy}_{\text{CV}})^2}
+\end{equation}
+
+%\section{Relación entre Métricas}
+
+\subsection{Relación entre F1 y las métricas componentes}
+
+El F1-Score puede expresarse como:
+
+\begin{equation}
+F_1 = \frac{2}{\frac{1}{\text{Precision}} + \frac{1}{\text{Recall}}}
+\end{equation}
+
+Esta es la media armónica, que es menor o igual que la media aritmética:
+
+\begin{equation}
+F_1 \leq \frac{\text{Precision} + \text{Recall}}{2}
+\end{equation}
+
+\subsection{Relación entre Accuracy y otras métricas}
+
+La accuracy puede descomponerse como:
+
+\begin{equation}
+\text{Accuracy} = \frac{VP + VN}{VP + VN + FP + FN}
+\end{equation}
+
+En términos de precision y recall:
+
+\begin{equation}
+\text{Accuracy} = \frac{VP + VN}{(VP + VN + FP + FN)}
+\end{equation}
+
+No es una función directa de precision y recall, ya que también depende de los verdaderos negativos.
+
+\section{Ejemplo Numérico}
+
+Supongamos una matriz de confusión:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c|c|c|}
+\cline{3-3}
+\multicolumn{2}{c|}{} & \multicolumn{2}{c}{Predicción} \\
+\cline{3-4}
+\multicolumn{2}{c|}{} & Positivo & Negativo \\
+\cline{2-4}
+\multirow{2}{*}{Real} & Positivo & 80 & 20 \\
+\cline{2-4}
+& Negativo & 15 & 85 \\
+\cline{2-4}
+\end{tabular}
+\end{table}
+
+\textbf{Métricas para clase positiva:}
+\begin{align}
+\text{Precision} &= \frac{80}{80 + 15} = \frac{80}{95} \approx 0.8421 \\
+\text{Recall} &= \frac{80}{80 + 20} = \frac{80}{100} = 0.8000 \\
+F_1 &= 2 \cdot \frac{0.8421 \cdot 0.8000}{0.8421 + 0.8000} \approx 0.8205
+\end{align}
+
+\textbf{Métricas para clase negativa:}
+\begin{align}
+\text{Precision} &= \frac{85}{85 + 20} = \frac{85}{105} \approx 0.8095 \\
+\text{Recall} &= \frac{85}{85 + 15} = \frac{85}{100} = 0.8500 \\
+F_1 &= 2 \cdot \frac{0.8095 \cdot 0.8500}{0.8095 + 0.8500} \approx 0.8293
+\end{align}
+
+\textbf{Promedios:}
+\begin{align}
+\text{Precision}_{\text{macro}} &= \frac{0.8421 + 0.8095}{2} = 0.8258 \\
+\text{Precision}_{\text{weighted}} &= \frac{0.8421 \cdot 100 + 0.8095 \cdot 100}{200} = 0.8258 \\
+\text{Accuracy} &= \frac{80 + 85}{200} = \frac{165}{200} = 0.8250
+\end{align}
+
+
+
+\end{document}

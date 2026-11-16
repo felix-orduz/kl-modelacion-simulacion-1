@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Material MS1</title>
+<meta name="description" content="Notebooks, notas y bibliografía del curso Modelación y Simulación I (Fundación Universitaria Konrad Lorenz, 2026-2).">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Fundación Universitaria Konrad Lorenz · Matemáticas · 2026-2</p>
+    <h1>Modelación y Simulación I</h1>
+    <p class="lede">Material del curso del profesor John A. Arredondo: un curso de modelado con
+      machine learning que estudia las bases matemáticas de cada método, de la regresión lineal
+      al k-means, programado en Python. Todo lo que estaba en el aula virtual, organizado por tema.</p>
+    <div class="stats">
+      <div><strong>19</strong>notebooks</div>
+      <div><strong>12</strong>documentos y notas</div>
+      <div><strong>6</strong>temas</div>
+      <div><strong>14</strong>semanas con material</div>
+    </div>
+    <p style="margin:24px 0 0;font-size:14px"><a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/tree/main" target="_blank" rel="noopener">Repositorio en GitHub</a>
+      · <a href="#semanas">Semana a semana</a> · <a href="#bibliografia">Bibliografía</a></p>
+  </div>
+</header>
+<nav class="toc" aria-label="Temas">
+  <div class="wrap"><div class="links"><a href="#01-regresion">Regresión lineal y métricas</a><a href="#02-preparacion-datos">Preparación de datos</a><a href="#03-modelos-dinamicos">Modelos dinámicos discretos</a><a href="#04-clasificacion">Clasificación supervisada</a><a href="#05-redes-neuronales">Perceptrón y redes neuronales</a><a href="#06-no-supervisado">Aprendizaje no supervisado</a><a href="#semanas">Semanas</a><a href="#bibliografia">Bibliografía</a></div>
+    <input id="filter" type="search" placeholder="Filtrar…" aria-label="Filtrar material">
+  </div>
+</nav>
+<main class="wrap">
+
+    <section id="01-regresion">
+      <h2>Regresión lineal y métricas</h2>
+      <p class="section-intro">Del primer modelo de regresión simple a la multilineal, con la correlación y las métricas RSE, R² y F deducidas y programadas desde cero.</p>
+      <div class="grid">
+      <article class="card" id="regresion-lineal-mi-primer-modelo-1" data-search="primer modelo de regresion lineal simple datos sinteticos y linearregression de scikit-learn: el modelo y = β₀ + β₁x + ε de punta a punta. regresion-lineal-mi-primer-modelo-1 semanas 1, 3">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semanas 1, 3</span></div>
+        <h4>Primer modelo de regresión lineal simple</h4>
+        <p>Datos sintéticos y LinearRegression de scikit-learn: el modelo y = β₀ + β₁x + ε de punta a punta.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/regresion-lineal-mi-primer-modelo-1.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/01-regresion/regresion-lineal-mi-primer-modelo-1.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/01-regresion/regresion-lineal-mi-primer-modelo-1.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/01-regresion/regresion-lineal-mi-primer-modelo-1.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" id="regresion-lineal-mi-primer-modelo-2" data-search="regresion simple con datos reales de co₂ concentracion anual de co₂ (2006–2013): ajuste con scikit-learn y luego a mano, con matematicas elementales. regresion-lineal-mi-primer-modelo-2 semanas 1, 3">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semanas 1, 3</span></div>
+        <h4>Regresión simple con datos reales de CO₂</h4>
+        <p>Concentración anual de CO₂ (2006–2013): ajuste con scikit-learn y luego a mano, con matemáticas elementales.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/regresion-lineal-mi-primer-modelo-2.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/01-regresion/regresion-lineal-mi-primer-modelo-2.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/01-regresion/regresion-lineal-mi-primer-modelo-2.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/01-regresion/regresion-lineal-mi-primer-modelo-2.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" id="regresion-lineal-mi-primer-modelo-3" data-search="regresion lineal con analisis estadistico datos sinteticos con relacion lineal, analisis exploratorio y resumen estadistico con statsmodels. regresion-lineal-mi-primer-modelo-3 semanas 1, 3">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semanas 1, 3</span></div>
+        <h4>Regresión lineal con análisis estadístico</h4>
+        <p>Datos sintéticos con relación lineal, análisis exploratorio y resumen estadístico con statsmodels.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/regresion-lineal-mi-primer-modelo-3.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/01-regresion/regresion-lineal-mi-primer-modelo-3.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/01-regresion/regresion-lineal-mi-primer-modelo-3.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/01-regresion/regresion-lineal-mi-primer-modelo-3.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" id="regresion-multilineal" data-search="regresion multilineal: teoria y practica notacion matricial, supuestos del modelo, metricas, matriz de correlacion y entrenamiento con varias variables. regresion-multilineal semanas 2, 6">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semanas 2, 6</span></div>
+        <h4>Regresión multilineal: teoría y práctica</h4>
+        <p>Notación matricial, supuestos del modelo, métricas, matriz de correlación y entrenamiento con varias variables.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/regresion-multilineal.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/01-regresion/regresion-multilineal.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/01-regresion/regresion-multilineal.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/01-regresion/regresion-multilineal.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" id="correlacion" data-search="correlacion definicion, diferencia entre correlacion poblacional y muestral, y la matriz de correlacion para ver varias relaciones a la vez. correlacion semana 3">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semana 3</span></div>
+        <h4>Correlación</h4>
+        <p>Definición, diferencia entre correlación poblacional y muestral, y la matriz de correlación para ver varias relaciones a la vez.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/correlacion.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/01-regresion/correlacion.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/01-regresion/correlacion.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/01-regresion/correlacion.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" id="correlacion-v2" data-search="correlacion (version de la semana 5) variante del notebook de correlacion publicada en la semana 5, solo con numpy y scipy. correlacion-v2 semana 5">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semana 5</span></div>
+        <h4>Correlación (versión de la semana 5)</h4>
+        <p>Variante del notebook de correlación publicada en la semana 5, solo con NumPy y SciPy.</p><p class="note">En el aula virtual se llamaba también correlacion.ipynb.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/correlacion-v2.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/01-regresion/correlacion-v2.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/01-regresion/correlacion-v2.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/01-regresion/correlacion-v2.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" id="rse-r2-y-f-statistic" data-search="rse, r² y f-statistic desde cero las tres metricas de regresion implementadas sin librerias de alto nivel, en un modelo simple y uno multiple. rse-r2-y-f-statistic semana 4">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semana 4</span></div>
+        <h4>RSE, R² y F-statistic desde cero</h4>
+        <p>Las tres métricas de regresión implementadas sin librerías de alto nivel, en un modelo simple y uno múltiple.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/rse-r2-y-f-statistic.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/01-regresion/rse-r2-y-f-statistic.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/01-regresion/rse-r2-y-f-statistic.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/01-regresion/rse-r2-y-f-statistic.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" data-search="apuntes de clase: regresion lineal y multilineal apuntes manuscritos escaneados, 6 paginas. apuntes-regresion-lineal-y-multilineal.pdf semanas 2, 4">
+        <div class="meta"><span class="chip kind">Notas</span><span class="chip">Semanas 2, 4</span></div>
+        <h4>Apuntes de clase: regresión lineal y multilineal</h4>
+        <p>Apuntes manuscritos escaneados, 6 páginas.</p>
+        <div class="actions">
+          <a class="primary" href="notas/apuntes-regresion-lineal-y-multilineal.pdf" target="_blank" rel="noopener">Abrir PDF</a>
+          
+        </div>
+      </article>
+      <article class="card" data-search="demostracion matematica de las metricas rse, r² y f deduccion de las tres metricas de error de la regresion lineal. 20 paginas. regresion-simple-metricas.pdf semanas 2, 5">
+        <div class="meta"><span class="chip kind">Notas</span><span class="chip">Semanas 2, 5</span></div>
+        <h4>Demostración matemática de las métricas RSE, R² y F</h4>
+        <p>Deducción de las tres métricas de error de la regresión lineal. 20 páginas.</p>
+        <div class="actions">
+          <a class="primary" href="notas/regresion-simple-metricas.pdf" target="_blank" rel="noopener">Abrir PDF</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/docs/notas/regresion-simple-metricas.tex" target="_blank" rel="noopener">Fuente .tex</a>
+        </div>
+      </article>
+      <article class="card" data-search="bondad de ajuste en modelos de regresion lineal que significa que un modelo capture bien la relacion entre las variables. 8 paginas. bondad-de-ajuste.pdf semana 4">
+        <div class="meta"><span class="chip kind">Notas</span><span class="chip">Semana 4</span></div>
+        <h4>Bondad de ajuste en modelos de regresión lineal</h4>
+        <p>Qué significa que un modelo capture bien la relación entre las variables. 8 páginas.</p>
+        <div class="actions">
+          <a class="primary" href="notas/bondad-de-ajuste.pdf" target="_blank" rel="noopener">Abrir PDF</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/docs/notas/bondad-de-ajuste.tex" target="_blank" rel="noopener">Fuente .tex</a>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section id="02-preparacion-datos">
+      <h2>Preparación de datos</h2>
+      <p class="section-intro">Limpieza, faltantes, outliers, escalado y codificación antes de modelar.</p>
+      <div class="grid">
+      <article class="card" id="recetario-data-cleaning" data-search="recetario de data cleaning eda, faltantes, outliers (iqr, z-score, mad), escalado, codificacion, particion y validacion cruzada. acompana al recetario en word. recetario-data-cleaning semana 5">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semana 5</span></div>
+        <h4>Recetario de data cleaning</h4>
+        <p>EDA, faltantes, outliers (IQR, Z-score, MAD), escalado, codificación, partición y validación cruzada. Acompaña al recetario en Word.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/recetario-data-cleaning.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/02-preparacion-datos/recetario-data-cleaning.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/02-preparacion-datos/recetario-data-cleaning.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/02-preparacion-datos/recetario-data-cleaning.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" data-search="recetario de data cleaning (word) guia comentada para preparar datos reales antes de modelar. j. a. arredondo y l. c. sanchez. recetario-data-cleaning.docx semana 4">
+        <div class="meta"><span class="chip kind">Documento</span><span class="chip">Semana 4</span></div>
+        <h4>Recetario de data cleaning (Word)</h4>
+        <p>Guía comentada para preparar datos reales antes de modelar. J. A. Arredondo y L. C. Sánchez.</p>
+        <div class="actions">
+          <a class="primary" href="notas/recetario-data-cleaning.docx" target="_blank" rel="noopener">Descargar .docx</a>
+          
+        </div>
+      </article>
+      <article class="card" data-search="ideas para mejorar el tutorial de pandas observaciones sobre como explicar el codigo del tutorial de pandas de la semana 1. ideas-para-mejorar-el-tutorial-de-pandas.docx semana 1">
+        <div class="meta"><span class="chip kind">Documento</span><span class="chip">Semana 1</span></div>
+        <h4>Ideas para mejorar el tutorial de pandas</h4>
+        <p>Observaciones sobre cómo explicar el código del tutorial de pandas de la semana 1.</p>
+        <div class="actions">
+          <a class="primary" href="notas/ideas-para-mejorar-el-tutorial-de-pandas.docx" target="_blank" rel="noopener">Descargar .docx</a>
+          
+        </div>
+      </article>
+      </div>
+    </section>
+    <section id="03-modelos-dinamicos">
+      <h2>Modelos dinámicos discretos</h2>
+      <p class="section-intro">Ecuaciones en diferencias, crecimiento y caos en el mapa logístico.</p>
+      <div class="grid">
+      <article class="card" id="taller-ecuaciones-en-diferencias" data-search="taller de ecuaciones en diferencias el analogo discreto de las ecuaciones diferenciales: interes compuesto y otros sistemas que evolucionan paso a paso. taller-ecuaciones-en-diferencias semana 7">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semana 7</span></div>
+        <h4>Taller de ecuaciones en diferencias</h4>
+        <p>El análogo discreto de las ecuaciones diferenciales: interés compuesto y otros sistemas que evolucionan paso a paso.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/taller-ecuaciones-en-diferencias.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/03-modelos-dinamicos/taller-ecuaciones-en-diferencias.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/03-modelos-dinamicos/taller-ecuaciones-en-diferencias.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/03-modelos-dinamicos/taller-ecuaciones-en-diferencias.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" id="codigologistico.r" data-search="caos en el mapa logistico (r) diagrama de telarana de y(t+1) = r·y(t)·(1 − y(t)/k) iterado 100 veces. codigologistico.r">
+        <div class="meta"><span class="chip kind">Código R</span><span class="chip">Semana 12</span></div>
+        <h4>Caos en el mapa logístico (R)</h4>
+        <p>Diagrama de telaraña de y(t+1) = r·y(t)·(1 − y(t)/K) iterado 100 veces.</p>
+        <div class="actions">
+          <a class="primary" href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/03-modelos-dinamicos/codigologistico.r" target="_blank" rel="noopener">Ver código</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/03-modelos-dinamicos/codigologistico.r" download>Descargar</a>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section id="04-clasificacion">
+      <h2>Clasificación supervisada</h2>
+      <p class="section-intro">k vecinos más cercanos, regresión logística, árboles de decisión y SVM.</p>
+      <div class="grid">
+      <article class="card" id="knn" data-search="clasificacion con k vecinos mas cercanos (knn) datos sinteticos en dos dimensiones, particion entrenamiento/prueba, el voto de los k vecinos y su evaluacion. knn semana 9">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semana 9</span></div>
+        <h4>Clasificación con k vecinos más cercanos (KNN)</h4>
+        <p>Datos sintéticos en dos dimensiones, partición entrenamiento/prueba, el voto de los k vecinos y su evaluación.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/knn.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/04-clasificacion/knn.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/04-clasificacion/knn.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/04-clasificacion/knn.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" id="regresion-logistica" data-search="regresion logistica la funcion sigmoide, un ejemplo de aprobar o reprobar implementado a mano y un caso simulado de riesgo crediticio con scikit-learn. regresion-logistica semanas 10, 11, 12">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semanas 10, 11, 12</span></div>
+        <h4>Regresión logística</h4>
+        <p>La función sigmoide, un ejemplo de aprobar o reprobar implementado a mano y un caso simulado de riesgo crediticio con scikit-learn.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/regresion-logistica.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/04-clasificacion/regresion-logistica.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/04-clasificacion/regresion-logistica.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/04-clasificacion/regresion-logistica.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" id="arboles-decision" data-search="arboles de decision: regresion y clasificacion reproduce los ejemplos del documento de arboles y propone ejercicios con los datasets tips y penguins. arboles-decision semana 12">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semana 12</span></div>
+        <h4>Árboles de decisión: regresión y clasificación</h4>
+        <p>Reproduce los ejemplos del documento de árboles y propone ejercicios con los datasets tips y penguins.</p><p class="note">El .ipynb se publicó sin salidas; la vista HTML sí las tiene.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/arboles-decision.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/04-clasificacion/arboles-decision.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/04-clasificacion/arboles-decision.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/04-clasificacion/arboles-decision.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" id="ejemplos-svm" data-search="ejemplos de svm celdas de codigo con ejemplos de maquinas de soporte vectorial en scikit-learn. ejemplos-svm semana 14">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semana 14</span></div>
+        <h4>Ejemplos de SVM</h4>
+        <p>Celdas de código con ejemplos de máquinas de soporte vectorial en scikit-learn.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/ejemplos-svm.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/04-clasificacion/ejemplos-svm.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/04-clasificacion/ejemplos-svm.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/04-clasificacion/ejemplos-svm.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" id="svm-2024-2" data-search="metodos de kernel y maquinas de soporte vectorial el truco del kernel, el problema de optimizacion del svm, margen suave, extension multiclase y un ejemplo practico. svm-2024-2 semana 14">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semana 14</span></div>
+        <h4>Métodos de kernel y máquinas de soporte vectorial</h4>
+        <p>El truco del kernel, el problema de optimización del SVM, margen suave, extensión multiclase y un ejemplo práctico.</p><p class="note">Material de 2024-2 que el profesor reutilizó en este semestre.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/svm-2024-2.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/04-clasificacion/svm-2024-2.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/04-clasificacion/svm-2024-2.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/04-clasificacion/svm-2024-2.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" data-search="metricas de evaluacion para clasificacion (knn) matriz de confusion, exactitud y metricas derivadas. 5 paginas. acuracy-en-knn.pdf semana 9">
+        <div class="meta"><span class="chip kind">Notas</span><span class="chip">Semana 9</span></div>
+        <h4>Métricas de evaluación para clasificación (KNN)</h4>
+        <p>Matriz de confusión, exactitud y métricas derivadas. 5 páginas.</p>
+        <div class="actions">
+          <a class="primary" href="notas/acuracy-en-knn.pdf" target="_blank" rel="noopener">Abrir PDF</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/docs/notas/acuracy-en-knn.tex" target="_blank" rel="noopener">Fuente .tex</a>
+        </div>
+      </article>
+      <article class="card" data-search="regresion logistica y clasificacion binaria elementos teoricos del clasificador con regresion logistica. 16 paginas. clasificacion-logistica.pdf semanas 10, 12">
+        <div class="meta"><span class="chip kind">Notas</span><span class="chip">Semanas 10, 12</span></div>
+        <h4>Regresión logística y clasificación binaria</h4>
+        <p>Elementos teóricos del clasificador con regresión logística. 16 páginas.</p>
+        <div class="actions">
+          <a class="primary" href="notas/clasificacion-logistica.pdf" target="_blank" rel="noopener">Abrir PDF</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/docs/notas/clasificacion-logistica.tex" target="_blank" rel="noopener">Fuente .tex</a>
+        </div>
+      </article>
+      <article class="card" data-search="metricas de evaluacion para modelos de clasificacion documento base de la tarea 5. 14 paginas. metricas-clasificacion.pdf semana 10">
+        <div class="meta"><span class="chip kind">Notas</span><span class="chip">Semana 10</span></div>
+        <h4>Métricas de evaluación para modelos de clasificación</h4>
+        <p>Documento base de la tarea 5. 14 páginas.</p>
+        <div class="actions">
+          <a class="primary" href="notas/metricas-clasificacion.pdf" target="_blank" rel="noopener">Abrir PDF</a>
+          
+        </div>
+      </article>
+      <article class="card" data-search="arboles de decision: idea esencial particion del espacio de caracteristicas en regiones. 2 paginas. ejemplo-arbol-introductorio.pdf semana 12">
+        <div class="meta"><span class="chip kind">Notas</span><span class="chip">Semana 12</span></div>
+        <h4>Árboles de decisión: idea esencial</h4>
+        <p>Partición del espacio de características en regiones. 2 páginas.</p>
+        <div class="actions">
+          <a class="primary" href="notas/ejemplo-arbol-introductorio.pdf" target="_blank" rel="noopener">Abrir PDF</a>
+          
+        </div>
+      </article>
+      <article class="card" data-search="arboles de decision: regresion y clasificacion documento maestro sobre arboles de decision. 18 paginas. arboles-decision.pdf semana 12">
+        <div class="meta"><span class="chip kind">Notas</span><span class="chip">Semana 12</span></div>
+        <h4>Árboles de decisión: regresión y clasificación</h4>
+        <p>Documento maestro sobre árboles de decisión. 18 páginas.</p>
+        <div class="actions">
+          <a class="primary" href="notas/arboles-decision.pdf" target="_blank" rel="noopener">Abrir PDF</a>
+          
+        </div>
+      </article>
+      </div>
+    </section>
+    <section id="05-redes-neuronales">
+      <h2>Perceptrón y redes neuronales</h2>
+      <p class="section-intro">Del perceptrón para regresión a la red neuronal y la clasificación de dígitos MNIST.</p>
+      <div class="grid">
+      <article class="card" id="perceptron" data-search="regresion con un perceptron simple el perceptron adaptado a regresion con activacion lineal: entrenamiento, evolucion del error y comparacion con linearregression. perceptron semana 13">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semana 13</span></div>
+        <h4>Regresión con un perceptrón simple</h4>
+        <p>El perceptrón adaptado a regresión con activación lineal: entrenamiento, evolución del error y comparación con LinearRegression.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/perceptron.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/05-redes-neuronales/perceptron.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/05-redes-neuronales/perceptron.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/05-redes-neuronales/perceptron.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" id="red-neuronal-i" data-search="primer modelo de prediccion con red neuronal arquitectura basica, datos sinteticos no lineales, preprocesamiento y entrenamiento con tensorflow/keras. red-neuronal-i semana 13">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semana 13</span></div>
+        <h4>Primer modelo de predicción con red neuronal</h4>
+        <p>Arquitectura básica, datos sintéticos no lineales, preprocesamiento y entrenamiento con TensorFlow/Keras.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/red-neuronal-i.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/05-redes-neuronales/red-neuronal-i.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/05-redes-neuronales/red-neuronal-i.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/05-redes-neuronales/red-neuronal-i.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" id="preceptron-clasificacion" data-search="perceptron para clasificar digitos mnist clasificacion binaria entre dos digitos manuscritos del dataset mnist con un perceptron. preceptron-clasificacion semana 15">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semana 15</span></div>
+        <h4>Perceptrón para clasificar dígitos MNIST</h4>
+        <p>Clasificación binaria entre dos dígitos manuscritos del dataset MNIST con un perceptrón.</p><p class="note">Se conserva el nombre original del archivo (preceptron).</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/preceptron-clasificacion.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/05-redes-neuronales/preceptron-clasificacion.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/05-redes-neuronales/preceptron-clasificacion.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/05-redes-neuronales/preceptron-clasificacion.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" data-search="elementos matematicos para una primera red neuronal fundamentos matematicos de un primer modelo de prediccion con red neuronal. 8 paginas. redes-neuronales.pdf semana 13">
+        <div class="meta"><span class="chip kind">Notas</span><span class="chip">Semana 13</span></div>
+        <h4>Elementos matemáticos para una primera red neuronal</h4>
+        <p>Fundamentos matemáticos de un primer modelo de predicción con red neuronal. 8 páginas.</p>
+        <div class="actions">
+          <a class="primary" href="notas/redes-neuronales.pdf" target="_blank" rel="noopener">Abrir PDF</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/docs/notas/redes-neuronales.tex" target="_blank" rel="noopener">Fuente .tex</a>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section id="06-no-supervisado">
+      <h2>Aprendizaje no supervisado</h2>
+      <p class="section-intro">k-means paso a paso y su comparación con los modelos supervisados del curso.</p>
+      <div class="grid">
+      <article class="card" id="kmeans-notebook" data-search="k-means paso a paso el algoritmo de lloyd desde cero, escalado, inicializacion, reinicios y comparacion con scikit-learn sobre un caso de supermercado y los datos de pinguinos. kmeans-notebook semana 14">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semana 14</span></div>
+        <h4>k-means paso a paso</h4>
+        <p>El algoritmo de Lloyd desde cero, escalado, inicialización, reinicios y comparación con scikit-learn sobre un caso de supermercado y los datos de pingüinos.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/kmeans-notebook.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/06-no-supervisado/kmeans-notebook.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/06-no-supervisado/kmeans-notebook.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/06-no-supervisado/kmeans-notebook.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" id="comparativo-kmeans-knn-arboles-logistica" data-search="k-means comparado con knn, arboles y logistica calidad de datos, escalado, criterios para elegir k, estabilidad de los grupos y comparacion con los clasificadores del curso. comparativo-kmeans-knn-arboles-logistica semana 15">
+        <div class="meta"><span class="chip kind">Notebook</span><span class="chip">Semana 15</span></div>
+        <h4>k-means comparado con KNN, árboles y logística</h4>
+        <p>Calidad de datos, escalado, criterios para elegir k, estabilidad de los grupos y comparación con los clasificadores del curso.</p>
+        <div class="actions">
+          <a class="primary" href="notebooks/comparativo-kmeans-knn-arboles-logistica.html">Ver notebook</a>
+          <a href="https://colab.research.google.com/github/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/06-no-supervisado/comparativo-kmeans-knn-arboles-logistica.ipynb" target="_blank" rel="noopener">Colab</a>
+          <a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/notebooks/06-no-supervisado/comparativo-kmeans-knn-arboles-logistica.ipynb" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://raw.githubusercontent.com/felix-orduz/kl-modelacion-simulacion-1/main/notebooks/06-no-supervisado/comparativo-kmeans-knn-arboles-logistica.ipynb" download>.ipynb</a>
+        </div>
+      </article>
+      <article class="card" data-search="k-means de los fundamentos matematicos a las decisiones practicas: preprocesamiento, inicializacion, eleccion de k y evaluacion. 20 paginas. kmeans.pdf semana 13">
+        <div class="meta"><span class="chip kind">Notas</span><span class="chip">Semana 13</span></div>
+        <h4>k-means</h4>
+        <p>De los fundamentos matemáticos a las decisiones prácticas: preprocesamiento, inicialización, elección de k y evaluación. 20 páginas.</p>
+        <div class="actions">
+          <a class="primary" href="notas/kmeans.pdf" target="_blank" rel="noopener">Abrir PDF</a>
+          
+        </div>
+      </article>
+      </div>
+    </section>
+    <section id="semanas">
+      <h2>Semana a semana</h2>
+      <p class="section-intro">En qué semana apareció cada material en el aula virtual. Varios notebooks se publicaron en más de una semana.</p>
+      <div class="table-scroll"><table>
+        <thead><tr><th>Sem.</th><th>Material</th></tr></thead>
+        <tbody>
+<tr data-search="semana 1  primer modelo de regresion lineal simple   regresion simple con datos reales de co₂   regresion lineal con analisis estadistico   ideas para mejorar el tutorial de pandas   lectura: shiflet, a. b. y shiflet, g. w   lectura: garcia-sabater, j. p. y maheut, j   lectura: parra, m. tutorial de pandas "><td class="num">1</td><td><a href="#regresion-lineal-mi-primer-modelo-1">Primer modelo de regresión lineal simple</a><br><a href="#regresion-lineal-mi-primer-modelo-2">Regresión simple con datos reales de CO₂</a><br><a href="#regresion-lineal-mi-primer-modelo-3">Regresión lineal con análisis estadístico</a><br><a href="notas/ideas-para-mejorar-el-tutorial-de-pandas.docx" target="_blank" rel="noopener">Ideas para mejorar el tutorial de pandas</a><br><span style="color:var(--muted)">Lectura: Shiflet, A. B. y Shiflet, G. W</span><br><span style="color:var(--muted)">Lectura: García-Sabater, J. P. y Maheut, J</span><br><span style="color:var(--muted)">Lectura: Parra, M. Tutorial de pandas</span></td></tr>
+<tr data-search="semana 2  regresion multilineal: teoria y practica   apuntes de clase: regresion lineal y multilineal   demostracion matematica de las metricas rse, r² y f   dataset-produccion-v3.csv "><td class="num">2</td><td><a href="#regresion-multilineal">Regresión multilineal: teoría y práctica</a><br><a href="notas/apuntes-regresion-lineal-y-multilineal.pdf" target="_blank" rel="noopener">Apuntes de clase: regresión lineal y multilineal</a><br><a href="notas/regresion-simple-metricas.pdf" target="_blank" rel="noopener">Demostración matemática de las métricas RSE, R² y F</a><br><a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/datos/dataset-produccion-v3.csv" target="_blank" rel="noopener">dataset-produccion-v3.csv</a></td></tr>
+<tr data-search="semana 3  primer modelo de regresion lineal simple   regresion simple con datos reales de co₂   regresion lineal con analisis estadistico   correlacion   dataset-produccion-v3.csv "><td class="num">3</td><td><a href="#regresion-lineal-mi-primer-modelo-1">Primer modelo de regresión lineal simple</a><br><a href="#regresion-lineal-mi-primer-modelo-2">Regresión simple con datos reales de CO₂</a><br><a href="#regresion-lineal-mi-primer-modelo-3">Regresión lineal con análisis estadístico</a><br><a href="#correlacion">Correlación</a><br><a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/datos/dataset-produccion-v3.csv" target="_blank" rel="noopener">dataset-produccion-v3.csv</a></td></tr>
+<tr data-search="semana 4  rse, r² y f-statistic desde cero   apuntes de clase: regresion lineal y multilineal   bondad de ajuste en modelos de regresion lineal   recetario de data cleaning (word) "><td class="num">4</td><td><a href="#rse-r2-y-f-statistic">RSE, R² y F-statistic desde cero</a><br><a href="notas/apuntes-regresion-lineal-y-multilineal.pdf" target="_blank" rel="noopener">Apuntes de clase: regresión lineal y multilineal</a><br><a href="notas/bondad-de-ajuste.pdf" target="_blank" rel="noopener">Bondad de ajuste en modelos de regresión lineal</a><br><a href="notas/recetario-data-cleaning.docx" target="_blank" rel="noopener">Recetario de data cleaning (Word)</a></td></tr>
+<tr data-search="semana 5  correlacion (version de la semana 5)   recetario de data cleaning   demostracion matematica de las metricas rse, r² y f "><td class="num">5</td><td><a href="#correlacion-v2">Correlación (versión de la semana 5)</a><br><a href="#recetario-data-cleaning">Recetario de data cleaning</a><br><a href="notas/regresion-simple-metricas.pdf" target="_blank" rel="noopener">Demostración matemática de las métricas RSE, R² y F</a></td></tr>
+<tr data-search="semana 6  regresion multilineal: teoria y practica   lectura: kalman, d., forgoston, e. y goetz, a "><td class="num">6</td><td><a href="#regresion-multilineal">Regresión multilineal: teoría y práctica</a><br><span style="color:var(--muted)">Lectura: Kalman, D., Forgoston, E. y Goetz, A</span></td></tr>
+<tr data-search="semana 7  taller de ecuaciones en diferencias   dataset-real-estate.csv   lectura: kalman, d., forgoston, e. y goetz, a   lectura: heinz, s "><td class="num">7</td><td><a href="#taller-ecuaciones-en-diferencias">Taller de ecuaciones en diferencias</a><br><a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/datos/dataset-real-estate.csv" target="_blank" rel="noopener">dataset-real-estate.csv</a><br><span style="color:var(--muted)">Lectura: Kalman, D., Forgoston, E. y Goetz, A</span><br><span style="color:var(--muted)">Lectura: Heinz, S</span></td></tr>
+<tr data-search="semana 9  clasificacion con k vecinos mas cercanos (knn)   metricas de evaluacion para clasificacion (knn) "><td class="num">9</td><td><a href="#knn">Clasificación con k vecinos más cercanos (KNN)</a><br><a href="notas/acuracy-en-knn.pdf" target="_blank" rel="noopener">Métricas de evaluación para clasificación (KNN)</a></td></tr>
+<tr data-search="semana 10  regresion logistica   regresion logistica y clasificacion binaria   metricas de evaluacion para modelos de clasificacion   lectura: openai. finite time blowup for navier–stokes. documento discutido en el debate de la semana 10 "><td class="num">10</td><td><a href="#regresion-logistica">Regresión logística</a><br><a href="notas/clasificacion-logistica.pdf" target="_blank" rel="noopener">Regresión logística y clasificación binaria</a><br><a href="notas/metricas-clasificacion.pdf" target="_blank" rel="noopener">Métricas de evaluación para modelos de clasificación</a><br><span style="color:var(--muted)">Lectura: OpenAI. Finite Time Blowup for Navier–Stokes. Documento discutido en el debate de la semana 10</span></td></tr>
+<tr data-search="semana 11  regresion logistica   lectura: heinz, s "><td class="num">11</td><td><a href="#regresion-logistica">Regresión logística</a><br><span style="color:var(--muted)">Lectura: Heinz, S</span></td></tr>
+<tr data-search="semana 12  regresion logistica   arboles de decision: regresion y clasificacion   regresion logistica y clasificacion binaria   arboles de decision: idea esencial   arboles de decision: regresion y clasificacion   caos en el mapa logistico (r) "><td class="num">12</td><td><a href="#regresion-logistica">Regresión logística</a><br><a href="#arboles-decision">Árboles de decisión: regresión y clasificación</a><br><a href="notas/clasificacion-logistica.pdf" target="_blank" rel="noopener">Regresión logística y clasificación binaria</a><br><a href="notas/ejemplo-arbol-introductorio.pdf" target="_blank" rel="noopener">Árboles de decisión: idea esencial</a><br><a href="notas/arboles-decision.pdf" target="_blank" rel="noopener">Árboles de decisión: regresión y clasificación</a><br><a href="#codigologistico.r">Caos en el mapa logístico (R)</a></td></tr>
+<tr data-search="semana 13  regresion con un perceptron simple   primer modelo de prediccion con red neuronal   elementos matematicos para una primera red neuronal   k-means "><td class="num">13</td><td><a href="#perceptron">Regresión con un perceptrón simple</a><br><a href="#red-neuronal-i">Primer modelo de predicción con red neuronal</a><br><a href="notas/redes-neuronales.pdf" target="_blank" rel="noopener">Elementos matemáticos para una primera red neuronal</a><br><a href="notas/kmeans.pdf" target="_blank" rel="noopener">k-means</a></td></tr>
+<tr data-search="semana 14  ejemplos de svm   metodos de kernel y maquinas de soporte vectorial   k-means paso a paso "><td class="num">14</td><td><a href="#ejemplos-svm">Ejemplos de SVM</a><br><a href="#svm-2024-2">Métodos de kernel y máquinas de soporte vectorial</a><br><a href="#kmeans-notebook">k-means paso a paso</a></td></tr>
+<tr data-search="semana 15  perceptron para clasificar digitos mnist   k-means comparado con knn, arboles y logistica "><td class="num">15</td><td><a href="#preceptron-clasificacion">Perceptrón para clasificar dígitos MNIST</a><br><a href="#comparativo-kmeans-knn-arboles-logistica">k-means comparado con KNN, árboles y logística</a></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+    <section id="datos">
+      <h2>Datos</h2>
+      <p class="section-intro">La mayoría de los notebooks generan sus datos o usan conjuntos de seaborn y scikit-learn. Estos son los archivos que se publicaron aparte.</p>
+      <ul><li><a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/datos/dataset-produccion-v3.csv" target="_blank" rel="noopener"><code>dataset-produccion-v3.csv</code></a> · Datos de producción usados en la tarea 2 (regresión lineal múltiple).</li><li><a href="https://github.com/felix-orduz/kl-modelacion-simulacion-1/blob/main/datos/dataset-real-estate.csv" target="_blank" rel="noopener"><code>dataset-real-estate.csv</code></a> · Datos de bienes raíces publicados en la semana 7.</li></ul>
+    </section>
+    <section id="bibliografia">
+      <h2>Bibliografía y lecturas</h2>
+      <p class="section-intro">Lecturas que se compartieron en el aula virtual. Por derechos de autor no se alojan aquí; se citan para conseguirlas en la biblioteca o con el editor.</p>
+      <ol class="refs"><li>Shiflet, A. B. y Shiflet, G. W. (2014). <em>Introduction to Computational Science: Modeling and Simulation for the Sciences</em> (2.ª ed.). Princeton University Press. Módulo 1.1. <span class="chip">Semana 1</span></li><li>García-Sabater, J. P. y Maheut, J. (2021). <em>Introducción al modelado matemático</em>. Nota técnica, RiuNet, Universitat Politècnica de València. <a href="http://hdl.handle.net/10251/158555" target="_blank" rel="noopener">Enlace</a> <span class="chip">Semana 1</span></li><li>Parra, M. <em>Tutorial de pandas</em> (T1). <span class="chip">Semana 1</span></li><li>Kalman, D., Forgoston, E. y Goetz, A. (2019). <em>Elementary Mathematical Models: An Accessible Development without Calculus</em> (2.ª ed.). AMS/MAA Textbooks 50. Capítulos de crecimiento cuadrático, geométrico y mixto. <span class="chip">Semanas 6, 7</span></li><li>Heinz, S. (2011). <em>Mathematical Modeling</em>. Springer. Capítulos 1, 2 y 5. <a href="https://doi.org/10.1007/978-3-642-20311-4" target="_blank" rel="noopener">Enlace</a> <span class="chip">Semanas 7, 11</span></li><li>OpenAI. <em>Finite Time Blowup for Navier–Stokes</em>. Documento discutido en el debate de la semana 10. <span class="chip">Semana 10</span></li></ol>
+    </section>
+</main>
+<footer>
+  <div class="wrap">
+    <p>Los notebooks y las notas son del profesor John A. Arredondo y de quienes él acredita en cada documento.
+      Se publican como respaldo del aula virtual del curso; los derechos son de sus autores.</p>
+    <p>Recopilación: estudiante del curso, 2026-2. Generado el 2026-11-16.</p>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

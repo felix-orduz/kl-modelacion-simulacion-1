@@ -1,0 +1,74 @@
+:root{
+  --bg:#f7f6f2; --surface:#ffffff; --text:#1d2329; --muted:#5b6670; --line:#e3e1da;
+  --accent:#1f3a5f; --accent-soft:#e6edf5; --chip:#efece4; --link:#1f5fa8;
+  --shadow:0 1px 2px rgba(20,30,40,.06),0 4px 14px rgba(20,30,40,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#14181c; --surface:#1c2126; --text:#e6e8ea; --muted:#9aa5ae; --line:#2c333a;
+    --accent:#8fb4e3; --accent-soft:#22303f; --chip:#262c32; --link:#8fb4e3;
+    --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14181c; --surface:#1c2126; --text:#e6e8ea; --muted:#9aa5ae; --line:#2c333a;
+  --accent:#8fb4e3; --accent-soft:#22303f; --chip:#262c32; --link:#8fb4e3; --shadow:none;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);
+  font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--link)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+header.hero{border-bottom:1px solid var(--line);background:var(--surface)}
+header.hero .wrap{padding-top:48px;padding-bottom:36px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:600;font-size:clamp(30px,5vw,44px);line-height:1.15;margin:0 0 12px}
+.lede{max-width:68ch;color:var(--muted);margin:0}
+.stats{display:flex;flex-wrap:wrap;gap:28px;margin-top:24px}
+.stats div{font-size:14px;color:var(--muted)}
+.stats strong{display:block;font-size:26px;color:var(--text);font-variant-numeric:tabular-nums}
+nav.toc{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:12px;padding-top:10px;padding-bottom:10px;align-items:center}
+nav.toc .links{display:flex;gap:4px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:none;
+  mask-image:linear-gradient(to right,#000 92%,transparent)}
+nav.toc .links::-webkit-scrollbar{display:none}
+nav.toc a{white-space:nowrap;text-decoration:none;color:var(--text);font-size:14px;padding:6px 12px;border-radius:999px}
+nav.toc a:hover{background:var(--chip)}
+nav.toc input{flex:0 0 200px;width:200px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);
+  background:var(--surface);color:var(--text);font:inherit;font-size:14px}
+main section{padding:40px 0 8px}
+h2{font-family:Georgia,"Times New Roman",serif;font-weight:600;font-size:28px;margin:0 0 6px}
+h3{font-size:18px;margin:32px 0 4px}
+.section-intro{color:var(--muted);margin:0 0 20px;max-width:70ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;
+  box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;scroll-margin-top:72px}
+.card h4{margin:0;font-size:16px;line-height:1.35}
+.card p{margin:0;font-size:14px;color:var(--muted)}
+.card .note{font-size:13px;font-style:italic}
+.meta{display:flex;flex-wrap:wrap;gap:6px}
+.chip{white-space:nowrap;font-size:12px;background:var(--chip);color:var(--muted);padding:2px 8px;border-radius:999px}
+.chip.kind{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:auto;padding-top:6px;font-size:14px}
+.actions a{text-decoration:none;font-weight:500}
+.actions a:hover{text-decoration:underline}
+.actions a.primary{background:var(--accent);color:var(--surface);padding:5px 12px;border-radius:6px}
+.actions a.primary:hover{text-decoration:none;opacity:.9}
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--chip)}
+td.num{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+td a{display:inline-block;margin:0 10px 2px 0}
+.table-scroll{overflow-x:auto}
+ol.refs{padding-left:20px;max-width:80ch}
+ol.refs li{margin-bottom:10px}
+footer{margin-top:56px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+footer .wrap{padding-top:24px;padding-bottom:40px}
+.hidden{display:none !important}
+@media (max-width:600px){
+  header.hero .wrap{padding-top:32px}
+  nav.toc .wrap{flex-wrap:wrap}
+  nav.toc .links{flex-basis:100%}
+  nav.toc input{flex:1 1 100%;width:100%}
+}

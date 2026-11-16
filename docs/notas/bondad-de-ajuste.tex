@@ -1,0 +1,432 @@
+\documentclass[12pt]{article}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{a4paper, margin=1.5cm}
+
+\title{Bondad de Ajuste en Modelos de Regresión Lineal}
+\author{Machine Learning - Evaluación de Modelos}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+
+
+En el contexto de modelos de regresión lineal, la \textbf{bondad de ajuste} se refiere a la capacidad del modelo para capturar adecuadamente la relación entre las variables independientes y la variable dependiente. Un buen ajuste indica que el modelo explica una proporción significativa de la variabilidad en los datos.
+
+
+
+\section{Modelo de Regresión Lineal}
+
+El modelo de regresión lineal múltiple se expresa como:
+
+\[
+Y = X\beta + \varepsilon
+\]
+
+donde:
+\begin{itemize}
+\item $Y$ es el vector de observaciones ($n \times 1$)
+\item $X$ es la matriz de diseño ($n \times p$)
+\item $\beta$ es el vector de parámetros ($p \times 1$)
+\item $\varepsilon$ es el vector de errores ($n \times 1$)
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Descomposición de la Variabilidad}
+
+
+
+La descomposición de la variabilidad es fundamental para entender cómo el modelo de regresión explica la dispersión de los datos. Esta descomposición se basa en el análisis de varianza (ANOVA) y proporciona la base teórica para el cálculo del coeficiente de determinación $R^2$.
+
+
+\subsection{Suma Total de Cuadrados (SST)}
+
+Representa la variabilidad total presente en la variable dependiente $Y$:
+
+\[
+\text{SST} = \sum_{i=1}^{n}(y_i - \bar{y})^2 = \mathbf{Y}^T\mathbf{Y} - n\bar{y}^2
+\]
+
+donde $\bar{y} = \frac{1}{n}\sum_{i=1}^{n}y_i$ es la media muestral de $Y$.
+
+\subsection{Suma de Cuadrados de la Regresión (SSR)}
+
+Mide la variabilidad explicada por el modelo:
+
+\[
+\text{SSR} = \sum_{i=1}^{n}(\hat{y}_i - \bar{y})^2 = \hat{\boldsymbol{\beta}}^T\mathbf{X}^T\mathbf{Y} - n\bar{y}^2
+\]
+
+\subsection{Suma de Cuadrados de los Errores (SSE)}
+
+Cuantifica la variabilidad no explicada por el modelo:
+
+\[
+\text{SSE} = \sum_{i=1}^{n}(y_i - \hat{y}_i)^2 = \mathbf{Y}^T\mathbf{Y} - \hat{\boldsymbol{\beta}}^T\mathbf{X}^T\mathbf{Y}
+\]
+
+\textbf{Demostración de la Descomposición}
+
+\begin{align*}
+\text{SST} &= \sum_{i=1}^{n}(y_i - \bar{y})^2 \\
+&= \sum_{i=1}^{n}[(y_i - \hat{y}_i) + (\hat{y}_i - \bar{y})]^2 \\
+&= \sum_{i=1}^{n}(y_i - \hat{y}_i)^2 + \sum_{i=1}^{n}(\hat{y}_i - \bar{y})^2 + 2\sum_{i=1}^{n}(y_i - \hat{y}_i)(\hat{y}_i - \bar{y})
+\end{align*}
+
+El término cruzado se anula:
+
+\begin{align*}
+\sum_{i=1}^{n}(y_i - \hat{y}_i)(\hat{y}_i - \bar{y}) &= \sum_{i=1}^{n}\varepsilon_i(\hat{y}_i - \bar{y}) \\
+&= \boldsymbol{\varepsilon}^T(\mathbf{\hat{Y}} - \bar{y}\mathbf{1}) \\
+&= 0 \quad \text{(por ortogonalidad de los residuales)}
+\end{align*}
+
+Por lo tanto:
+
+\[
+\text{SST} = \text{SSE} + \text{SSR}
+\]
+
+\textbf{Grados de Libertad}
+
+\begin{table}[h]
+\centering
+\caption{Descomposición de grados de libertad}
+\begin{tabular}{lcccc}
+\toprule
+Fuente de Variación & Suma de Cuadrados & Grados de Libertad & Cuadrado Medio & Esperanza del Cuadrado Medio \\
+\midrule
+Regresión & $\text{SSR}$ & $p-1$ & $\text{MSR} = \frac{\text{SSR}}{p-1}$ & $\sigma^2 + \frac{\boldsymbol{\beta}^T\mathbf{X}^T\mathbf{X}\boldsymbol{\beta}}{p-1}$ \\
+Error & $\text{SSE}$ & $n-p$ & $\text{MSE} = \frac{\text{SSE}}{n-p}$ & $\sigma^2$ \\
+Total & $\text{SST}$ & $n-1$ & $\text{MST} = \frac{\text{SST}}{n-1}$ & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Interpretación Geométrica}
+
+En el espacio vectorial $\mathbb{R}^n$:
+
+\begin{itemize}
+\item $\mathbf{Y}$: Vector de observaciones
+\item $\mathbf{\hat{Y}}$: Proyección de $\mathbf{Y}$ en el espacio columna de $\mathbf{X}$
+\item $\boldsymbol{\varepsilon}$: Vector residual (ortogonal al espacio columna de $\mathbf{X}$)
+\end{itemize}
+
+La descomposición corresponde al teorema de Pitágoras:
+
+\[
+\|\mathbf{Y} - \bar{y}\mathbf{1}\|^2 = \|\mathbf{\hat{Y}} - \bar{y}\mathbf{1}\|^2 + \|\mathbf{Y} - \mathbf{\hat{Y}}\|^2
+\]
+
+\subsection{Propiedades Estadísticas}
+
+\subsubsection{Distribuciones bajo Normalidad}
+
+Si $\varepsilon_i \sim N(0, \sigma^2)$:
+
+\begin{align*}
+\frac{\text{SSE}}{\sigma^2} &\sim \chi^2(n-p) \\
+\frac{\text{SSR}}{\sigma^2} &\sim \chi^2(p-1, \lambda) \quad \text{(no central)} \\
+\frac{\text{SST}}{\sigma^2} &\sim \chi^2(n-1, \lambda')
+\end{align*}
+
+donde $\lambda = \frac{\boldsymbol{\beta}^T\mathbf{X}^T\mathbf{X}\boldsymbol{\beta}}{2\sigma^2}$ es el parámetro de no centralidad.
+
+\subsubsection{Independencia Estadística}
+
+\begin{itemize}
+\item $\text{SSR}$ y $\text{SSE}$ son independientes
+\item $\text{SSE}$ es independiente de $\hat{\boldsymbol{\beta}}$
+\item $\text{SSR}$ y $\text{SST}$ no son independientes
+\end{itemize}
+
+\subsection{Aplicaciones en Inferencia}
+
+\subsubsection{Prueba F de Significancia Global}
+
+\[
+F = \frac{\text{MSR}}{\text{MSE}} = \frac{\text{SSR}/(p-1)}{\text{SSE}/(n-p)} \sim F(p-1, n-p)
+\]
+
+Bajo $H_0: \beta_1 = \beta_2 = \dots = \beta_{p-1} = 0$
+
+\subsubsection{Estimación de $\sigma^2$}
+
+\[
+\hat{\sigma}^2 = \text{MSE} = \frac{\text{SSE}}{n-p}
+\]
+
+es un estimador insesgado de $\sigma^2$.
+
+\subsection{Ejemplo Numérico Detallado}
+
+Para un modelo con $n=10$, $p=3$:
+
+\begin{align*}
+\text{SST} &= 150.0 \\
+\text{SSR} &= 105.0 \\
+\text{SSE} &= 45.0 \\
+R^2 &= \frac{105.0}{150.0} = 0.70 \\
+\text{MSE} &= \frac{45.0}{7} = 6.4286 \\
+F &= \frac{105.0/2}{45.0/7} = \frac{52.5}{6.4286} = 8.1667
+\end{align*}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Métricas de Bondad de Ajuste}
+
+\subsection{Coeficiente de Determinación ($R^2$)}
+
+\[
+R^2 = 1 - \frac{\text{SSE}}{\text{SST}} = \frac{\text{SSR}}{\text{SST}}
+\]
+
+Interpretación: Proporción de la varianza en la variable dependiente que es explicada por el modelo.
+
+\subsection{$R^2$ Ajustado}
+
+\[
+R^2_{\text{adj}} = 1 - \left(\frac{n-1}{n-p}\right)(1 - R^2)
+\]
+
+donde $p$ es el número de parámetros (incluyendo el intercepto).
+
+
+\subsection{Error Cuadrático Medio (MSE)}
+
+\[
+\text{MSE} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2 = \frac{\text{SSE}}{n}
+\]
+
+\subsection{Raíz del Error Cuadrático Medio (RMSE)}
+
+\[
+\text{RMSE} = \sqrt{\text{MSE}}
+\]
+
+\subsection{Error Absoluto Medio (MAE)}
+
+\[
+\text{MAE} = \frac{1}{n}\sum_{i=1}^{n}|y_i - \hat{y}_i|
+\]
+
+\section{Propiedades y Limitaciones}
+
+\subsection{Propiedades del $R^2$}
+
+\begin{enumerate}
+\item $0 \leq R^2 \leq 1$
+\item $R^2 = 1$ cuando SSE = 0 (ajuste perfecto)
+\item $R^2 = 0$ cuando SSR = 0 (el modelo no explica nada)
+\item El $R^2$ siempre aumenta al añadir más variables
+\end{enumerate}
+
+\subsection{Limitaciones del $R^2$}
+
+\begin{itemize}
+\item No indica si el modelo está correctamente especificado
+\item No detecta relaciones no lineales
+\item Puede ser inflado artificialmente añadiendo variables irrelevantes
+\item No considera la significancia estadística de los coeficientes
+\end{itemize}
+
+\section{Evaluación Estadística}
+
+\subsection{Prueba F de significancia global}
+
+\[
+F = \frac{\text{SSR}/(p-1)}{\text{SSE}/(n-p)} \sim F(p-1, n-p)
+\]
+
+Hipótesis:
+\begin{itemize}
+\item $H_0: \beta_1 = \beta_2 = \dots = \beta_{p-1} = 0$
+\item $H_1: \text{Al menos un } \beta_j \neq 0$
+\end{itemize}
+
+\subsection{Error Estándar de los Residuales}
+
+\[
+s = \sqrt{\frac{\text{SSE}}{n-p}}
+\]
+
+\section{Ejemplo Numérico}
+
+\begin{table}[h]
+\centering
+\caption{Descomposición de la variabilidad}
+\begin{tabular}{lccc}
+\toprule
+Fuente & Suma de Cuadrados & Grados de Libertad & Cuadrado Medio \\
+\midrule
+Regresión & SSR & $p-1$ & MSR = SSR/(p-1) \\
+Error & SSE & $n-p$ & MSE = SSE/(n-p) \\
+Total & SST & $n-1$ & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Interpretación Práctica}
+
+\subsection{Valores de Referencia}
+
+\begin{itemize}
+\item $R^2 < 0.3$: Ajuste pobre
+\item $0.3 \leq R^2 < 0.7$: Ajuste moderado
+\item $R^2 \geq 0.7$: Ajuste bueno
+\end{itemize}
+
+\subsection{Consideraciones Importantes}
+
+\begin{enumerate}
+\item Comparar $R^2$ entre modelos con la misma variable dependiente
+\item Preferir $R^2$ ajustado cuando los modelos tienen diferente número de predictores
+\item Considerar el contexto del problema y la variabilidad inherente de los datos
+\item Validar con métricas complementarias (MSE, MAE)
+\end{enumerate}
+
+\section{Conclusiones}
+
+La evaluación integral es necesaria porque diferentes métricas capturan aspectos distintos del desempeño del modelo:
+
+\begin{align*}
+R^2 &= 1 - \frac{\text{SSE}}{\text{SST}} \quad \text{(Varianza explicada)} \\
+\text{MSE} &= \frac{1}{n}\sum_{i=1}^n (y_i - \hat{y}_i)^2 \quad \text{(Error cuadrático)} \\
+\text{MAE} &= \frac{1}{n}\sum_{i=1}^n |y_i - \hat{y}_i| \quad \text{(Error absoluto)}
+\end{align*}
+
+Cada métrica proporciona información diferente sobre el comportamiento del modelo. La necesidad de múltiples métricas surge de sus diferentes propiedades matemáticas:
+
+\begin{itemize}
+\item \textbf{$R^2$:} Es adimensional pero susceptible a overfitting
+\[
+R^2_{\text{adj}} = 1 - \left(\frac{n-1}{n-p}\right)(1 - R^2)
+\]
+\item \textbf{MSE:} Penaliza más los errores grandes (diferenciable)
+\[
+\frac{\partial \text{MSE}}{\partial \hat{y}_i} = \frac{2}{n}(y_i - \hat{y}_i)
+\]
+\item \textbf{MAE:} Más robusto a outliers pero no diferenciable en cero
+\[
+\frac{\partial \text{MAE}}{\partial \hat{y}_i} = \text{sign}(y_i - \hat{y}_i)
+\end{itemize}
+
+\subsection{Considerar la significancia estadística}
+
+La significancia estadística se verifica mediante:
+
+\begin{align*}
+F\text{-test:} &\quad F = \frac{\text{MSR}}{\text{MSE}} \sim F(p-1, n-p) \\
+t\text{-test:} &\quad t_j = \frac{\hat{\beta}_j}{\text{SE}(\hat{\beta}_j)} \sim t(n-p)
+\end{align*}
+
+Un $R^2$ alto con p-values no significativos indica posible overfitting.
+
+\subsection{Validar con datos de prueba}
+
+La validación externa es crucial porque:
+
+\[
+\mathbb{E}[\text{MSE}_{\text{entrenamiento}}] \leq \mathbb{E}[\text{MSE}_{\text{prueba}}]
+\]
+
+El error de generalización se puede estimar mediante:
+
+\[
+\text{MSE}_{\text{prueba}} = \frac{1}{m}\sum_{i=1}^m (y_i^{\text{(test)}} - \hat{y}_i^{\text{(test)}})^2
+\]
+
+\subsection{Evaluar supuestos del modelo}
+
+Los supuestos del modelo tienen implicaciones matemáticas precisas:
+
+\subsubsection{Linealidad}
+\[
+\mathbb{E}[\varepsilon|\mathbf{X}] = 0 \quad \text{(El valor esperado de los errores es cero)}
+\]
+
+\subsubsection{Homocedasticidad}
+\[
+\text{Var}(\varepsilon|\mathbf{X}) = \sigma^2\mathbf{I} \quad \text{(Varianza constante)}
+\]
+
+\subsubsection{Independencia}
+\[
+\mathbb{E}[\varepsilon_i\varepsilon_j] = 0 \quad \text{para } i \neq j
+\]
+
+\subsubsection{Normalidad}
+\[
+\varepsilon \sim N(0, \sigma^2\mathbf{I}) \quad \text{(Para inferencia exacta)}
+\]
+
+\subsection{Un alto $R^2$ no garantiza un buen modelo predictivo}
+
+Matemáticamente, un $R^2$ alto puede coexistir con:
+
+\begin{align*}
+\text{Overfitting:} &\quad R^2_{\text{entrenamiento}} \gg R^2_{\text{prueba}} \\
+\text{Autocorrelación:} &\quad \mathbb{E}[\varepsilon_i\varepsilon_{i-1}] \neq 0 \\
+\text{Heterocedasticidad:} &\quad \text{Var}(\varepsilon_i) \neq \sigma^2
+\end{align*}
+
+\subsection{Implicaciones para la predicción}
+
+La calidad predictiva requiere:
+
+\[
+\mathbb{E}[(\hat{Y} - Y)^2] = \text{Var}(\hat{Y}) + \text{Bias}(\hat{Y})^2 + \text{Var}(\varepsilon)
+\]
+
+donde:
+\begin{itemize}
+\item $\text{Var}(\hat{Y})$: Varianza del estimador
+\item $\text{Bias}(\hat{Y})$: Sesgo del estimador
+\item $\text{Var}(\varepsilon)$: Varianza irreducible
+\end{itemize}
+
+\subsection{Recomendaciones Basadas en Evidencia Matemática}
+
+\begin{enumerate}
+\item \textbf{Validación Cruzada:}
+\[
+\text{CV}(k) = \frac{1}{k}\sum_{i=1}^k \text{MSE}_{\text{fold } i}
+\]
+
+\item \textbf{Regularización} (para mejorar generalización):
+\[
+\hat{\boldsymbol{\beta}}_{\text{ridge}} = \arg\min_{\boldsymbol{\beta}} \left\{\text{SSE} + \lambda\sum_{j=1}^p \beta_j^2\right\}
+\]
+
+\item \textbf{Análisis de Residuales:}
+\[
+r_i = y_i - \hat{y}_i \quad \text{deben ser } \sim N(0, \sigma^2)
+\]
+
+\item \textbf{Pruebas de Especificación:}
+\begin{align*}
+\text{Durbin-Watson:} &\quad d = \frac{\sum_{t=2}^n (r_t - r_{t-1})^2}{\sum_{t=1}^n r_t^2} \\
+\text{Breusch-Pagan:} &\quad \text{Para heterocedasticidad}
+\end{align*}
+\end{enumerate}
+
+\subsection{Conclusiones Finales}
+
+La evaluación de modelos requiere un enfoque multifacético que combine:
+
+\begin{itemize}
+\item \textbf{Métricas cuantitativas} ($R^2$, MSE, MAE)
+\item \textbf{Pruebas estadísticas} (F-test, t-test, pruebas de supuestos)
+\item \textbf{Validación empírica} (datos de prueba, validación cruzada)
+\item \textbf{Análisis cualitativo} (interpretabilidad, relevancia práctica)
+\end{itemize}
+
+Solo mediante esta aproximación integral se puede garantizar que un modelo con alta bondad de ajuste en muestra también tendrá buen desempeño predictivo en situaciones reales.
+
+
+\end{document}

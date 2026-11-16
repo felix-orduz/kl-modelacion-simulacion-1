@@ -1,0 +1,1239 @@
+\documentclass[12pt, a4paper]{article}
+
+% ─── Paquetes ────────────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{mdframed}
+
+% ─── Geometría de página ──────────────────────────────────────────────────────
+\geometry{
+  top    = 2.5cm,
+  bottom = 2.5cm,
+  left   = 2.8cm,
+  right  = 2.8cm
+}
+
+% ─── Colores ──────────────────────────────────────────────────────────────────
+\definecolor{azuloscuro}{RGB}{25, 55, 109}
+\definecolor{azulmedio}{RGB}{41, 98, 166}
+\definecolor{grisclaro}{RGB}{245, 247, 250}
+\definecolor{verdedef}{RGB}{0, 100, 60}
+\definecolor{rojoalerta}{RGB}{160, 30, 30}
+\definecolor{naranja}{RGB}{180, 90, 0}
+
+% ─── Hiperlinks ───────────────────────────────────────────────────────────────
+\hypersetup{
+  colorlinks = true,
+  linkcolor  = azulmedio,
+  urlcolor   = azulmedio,
+  citecolor  = azulmedio
+}
+
+% ─── Encabezado y pie ────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\small\textcolor{azulmedio}{Modelado y Simulación I}}
+\fancyhead[R]{\small\textcolor{azulmedio}{RSE $\cdot$ $R^2$ $\cdot$ F-statistic}}
+\fancyfoot[C]{\small\thepage}
+
+% ─── Estilos de sección ───────────────────────────────────────────────────────
+\titleformat{\section}
+  {\large\bfseries\color{azuloscuro}}
+  {\thesection.}{0.6em}{}[\vspace{-0.3em}\textcolor{azulmedio}{\rule{\linewidth}{1.2pt}}]
+
+\titleformat{\subsection}
+  {\normalsize\bfseries\color{azulmedio}}
+  {\thesubsection.}{0.5em}{}
+
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{naranja}}
+  {\thesubsubsection.}{0.5em}{}
+
+% ─── Entornos de teorema ──────────────────────────────────────────────────────
+\tcbuselibrary{theorems, skins, breakable}
+
+\newtcbtheorem[number within=section]{definicion}{Definición}{
+  enhanced,
+  colback    = grisclaro,
+  colframe   = verdedef,
+  fonttitle  = \bfseries\small,
+  attach boxed title to top left = {yshift=-2mm, xshift=4mm},
+  boxed title style = {colback=verdedef, colframe=verdedef},
+  breakable
+}{def}
+
+\newtcbtheorem[number within=section]{proposicion}{Proposición}{
+  enhanced,
+  colback    = grisclaro,
+  colframe   = azulmedio,
+  fonttitle  = \bfseries\small,
+  attach boxed title to top left = {yshift=-2mm, xshift=4mm},
+  boxed title style = {colback=azulmedio, colframe=azulmedio},
+  breakable
+}{prop}
+
+\newtcbtheorem[number within=section]{resultado}{Resultado}{
+  enhanced,
+  colback    = grisclaro,
+  colframe   = rojoalerta,
+  fonttitle  = \bfseries\small,
+  attach boxed title to top left = {yshift=-2mm, xshift=4mm},
+  boxed title style = {colback=rojoalerta, colframe=rojoalerta},
+  breakable
+}{res}
+
+\newtcbtheorem[number within=section]{observacion}{Observación}{
+}{obs}
+
+% ─── Caja de nota ────────────────────────────────────────────────────────────
+\newmdenv[
+  linecolor  = naranja,
+  linewidth  = 1.2pt,
+  backgroundcolor = grisclaro,
+  leftmargin = 4pt,
+  rightmargin = 4pt,
+  innerleftmargin = 8pt,
+  innerrightmargin = 8pt,
+  innertopmargin = 6pt,
+  innerbottommargin = 6pt
+]{notabox}
+
+% ─── Comandos matemáticos ─────────────────────────────────────────────────────
+\newcommand{\E}[1]{\mathbb{E}\!\left[#1\right]}
+\newcommand{\Var}[1]{\mathrm{Var}\!\left(#1\right)}
+\newcommand{\Cov}[2]{\mathrm{Cov}\!\left(#1,\,#2\right)}
+\newcommand{\Corr}[2]{\mathrm{Corr}\!\left(#1,\,#2\right)}
+\newcommand{\SD}[1]{\mathrm{SD}\!\left(#1\right)}
+\newcommand{\hbeta}{\hat{\beta}}
+\newcommand{\hy}{\hat{y}}
+\newcommand{\sxx}{S_{xx}}
+\newcommand{\syy}{S_{yy}}
+\newcommand{\sxy}{S_{xy}}
+\newcommand{\sumni}{\sum_{i=1}^{n}}
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\begin{document}
+% ══════════════════════════════════════════════════════════════════════════════
+
+% ─── Portada ─────────────────────────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+  {\color{azuloscuro}\rule{\linewidth}{2pt}}\\[0.4cm]
+  {\Huge\bfseries\color{azuloscuro}
+    Modelado y Simulación I}\\[0.3cm]
+  {\Large\color{azulmedio}
+    Demostración matemática de las métricas de error}\\[0.15cm]
+  {\large\color{azulmedio}
+    RSE \quad$\cdot$\quad $R^2$ \quad$\cdot$\quad F-statistic}\\[0.4cm]
+  {\large\color{azulmedio}
+   John A. Arredondo}\\[0.4cm]
+  {\color{azuloscuro}\rule{\linewidth}{2pt}}\\[1.5cm]
+  \vfill
+  {\small\color{gray}\today}
+\end{titlepage}
+
+% ─── Tabla de contenidos ─────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Fundamentos de Probabilidad y Estadística}
+% ══════════════════════════════════════════════════════════════════════════════
+
+En esta sección se presentan las definiciones y propiedades de todos los
+conceptos estadísticos empleados en las demostraciones posteriores.
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Esperanza matemática}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\begin{definicion}{Esperanza matemática (valor esperado)}{esperanza}
+Sea $X$ una variable aleatoria. Su \emph{esperanza matemática} o
+\emph{valor esperado}, denotada $\E{X}$, se define como:
+\begin{align*}
+  \E{X} &= \sum_{x} x\, P(X = x)
+    && \text{(caso discreto)}\\[4pt]
+  \E{X} &= \int_{-\infty}^{+\infty} x\, f_X(x)\,dx
+    && \text{(caso continuo)}
+\end{align*}
+donde $f_X(x)$ es la función de densidad de probabilidad de $X$.
+\end{definicion}
+
+\begin{proposicion}{Propiedades de la esperanza}{propE}
+Sean $X$, $Y$ variables aleatorias y $a, b \in \mathbb{R}$ constantes:
+\begin{enumerate}[label=(\roman*)]
+  \item \textbf{Linealidad:} $\E{aX + bY} = a\,\E{X} + b\,\E{Y}$
+  \item \textbf{Constante:} $\E{a} = a$
+  \item \textbf{Independencia:} si $X$ e $Y$ son independientes,
+        $\E{XY} = \E{X}\,\E{Y}$
+  \item \textbf{Forma cuadrática (escalar):}
+        $\E{X^2} = \Var{X} + \bigl(\E{X}\bigr)^2$
+\end{enumerate}
+\end{proposicion}
+
+\bigskip
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Varianza y Desviación Estándar}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\begin{definicion}{Varianza poblacional}{varianza}
+La \emph{varianza} de una variable aleatoria $X$ mide la dispersión
+promedio de sus valores respecto a su media $\mu = \E{X}$:
+\[
+  \Var{X}
+    = \E{\bigl(X - \E{X}\bigr)^2}
+    = \E{X^2} - \bigl(\E{X}\bigr)^2
+\]
+Se denota también como $\sigma_X^2$.
+\end{definicion}
+
+\begin{definicion}{Desviación estándar}{sd}
+La \emph{desviación estándar} de $X$ es la raíz cuadrada positiva de su
+varianza:
+\[
+  \SD{X} = \sigma_X = \sqrt{\Var{X}}
+\]
+A diferencia de la varianza, $\SD{X}$ tiene las mismas \emph{unidades} que $X$,
+lo que facilita su interpretación práctica.
+\end{definicion}
+
+\begin{proposicion}{Propiedades de la varianza}{propVar}
+Sean $X$, $Y$ variables aleatorias y $a, b \in \mathbb{R}$:
+\begin{enumerate}[label=(\roman*)]
+  \item $\Var{a} = 0$
+  \item $\Var{aX} = a^2\,\Var{X}$
+  \item $\Var{aX + b} = a^2\,\Var{X}$
+  \item $\Var{X + Y} = \Var{X} + \Var{Y} + 2\,\Cov{X}{Y}$
+  \item Si $X$ e $Y$ son independientes:
+        $\Var{X + Y} = \Var{X} + \Var{Y}$
+\end{enumerate}
+\end{proposicion}
+
+\bigskip
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Varianza muestral}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\begin{definicion}{Varianza muestral}{varmuestral}
+Dada una muestra $\{x_1, x_2, \ldots, x_n\}$ con media muestral
+$\bar{x} = \frac{1}{n}\sumni x_i$, la \emph{varianza muestral insesgada} es:
+\[
+  s_x^2 = \frac{1}{n-1}\sumni (x_i - \bar{x})^2
+\]
+El denominador es $n-1$ (y no $n$) para corregir el sesgo; se puede demostrar
+que $\E{s_x^2} = \sigma_x^2$.
+\end{definicion}
+
+\bigskip
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Covarianza y Correlación}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\begin{definicion}{Covarianza}{covarianza}
+La \emph{covarianza} entre dos variables aleatorias $X$ e $Y$ cuantifica su
+variación conjunta:
+\[
+  \Cov{X}{Y}
+    = \E{\bigl(X - \E{X}\bigr)\bigl(Y - \E{Y}\bigr)}
+    = \E{XY} - \E{X}\,\E{Y}
+\]
+\begin{itemize}[nosep]
+  \item $\Cov{X}{Y} > 0$: cuando $X$ sube, $Y$ tiende a subir.
+  \item $\Cov{X}{Y} < 0$: cuando $X$ sube, $Y$ tiende a bajar.
+  \item $\Cov{X}{Y} = 0$: no hay asociación lineal (no implica independencia).
+\end{itemize}
+\end{definicion}
+
+\begin{definicion}{Coeficiente de correlación de Pearson}{pearson}
+El \emph{coeficiente de correlación} $r_{XY}$ normaliza la covarianza al
+rango $[-1, 1]$:
+\[
+  r_{XY}
+    = \Corr{X}{Y}
+    = \frac{\Cov{X}{Y}}{\SD{X}\,\SD{Y}}
+    = \frac{\Cov{X}{Y}}{\sigma_X\,\sigma_Y}
+\]
+Muestralmente, dados $\{x_i, y_i\}$:
+\[
+  r_{xy}
+    = \frac{\sxy}{\sqrt{\sxx\,\syy}}
+\]
+donde se define la notación compacta:
+\[
+  \sxx = \sumni (x_i-\bar{x})^2,\quad
+  \syy = \sumni (y_i-\bar{y})^2,\quad
+  \sxy = \sumni (x_i-\bar{x})(y_i-\bar{y})
+\]
+\end{definicion}
+
+\bigskip
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Esperanza de una forma cuadrática}
+% ─────────────────────────────────────────────────────────────────────────────
+
+El siguiente resultado auxiliar se usa en la demostración del RSE.
+
+\begin{proposicion}{Esperanza de una suma cuadrática de errores}{formacuad}
+Si $\varepsilon_1, \varepsilon_2, \ldots, \varepsilon_n$ son variables
+aleatorias independientes con $\E{\varepsilon_i} = 0$ y
+$\Var{\varepsilon_i} = \sigma^2$, entonces:
+\[
+  \E{\sumni \varepsilon_i^2} = n\sigma^2
+\]
+\textit{Demostración.} Dado que $\E{\varepsilon_i} = 0$:
+\[
+  \E{\varepsilon_i^2}
+    = \Var{\varepsilon_i} + \bigl(\E{\varepsilon_i}\bigr)^2
+    = \sigma^2 + 0 = \sigma^2
+\]
+Por linealidad de la esperanza:
+$\displaystyle\E{\sumni \varepsilon_i^2} = \sumni \E{\varepsilon_i^2} = n\sigma^2$.\hfill$\square$
+\end{proposicion}
+
+\bigskip
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Distribuciones relevantes}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\begin{definicion}{Distribución normal}{normal}
+Una variable aleatoria $X$ sigue una distribución \emph{normal} o
+\emph{gaussiana} con media $\mu$ y varianza $\sigma^2$, notada
+$X \sim \mathcal{N}(\mu, \sigma^2)$, si su densidad es:
+\[
+  f(x) = \frac{1}{\sigma\sqrt{2\pi}}\,
+    \exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right),
+  \quad x \in \mathbb{R}
+\]
+\end{definicion}
+
+\begin{definicion}{Distribución chi-cuadrado}{chisq}
+Si $Z_1, Z_2, \ldots, Z_k$ son variables normales estándar independientes
+($Z_i \sim \mathcal{N}(0,1)$), entonces:
+\[
+  V = \sumni Z_i^2 \sim \chi^2_k
+\]
+es una distribución \emph{chi-cuadrado con $k$ grados de libertad}.
+Su esperanza es $\E{V} = k$.
+\end{definicion}
+
+\begin{definicion}{Distribución t de Student}{tdist}
+Si $Z \sim \mathcal{N}(0,1)$ y $V \sim \chi^2_k$ son independientes, entonces:
+\[
+  T = \frac{Z}{\sqrt{V/k}} \sim t_k
+\]
+es una distribución \emph{t de Student con $k$ grados de libertad}.
+\end{definicion}
+
+\begin{definicion}{Distribución F de Snedecor}{fdist}
+Si $U \sim \chi^2_p$ y $V \sim \chi^2_q$ son independientes, entonces:
+\[
+  F = \frac{U/p}{V/q} \sim F_{p,\,q}
+\]
+es una distribución \emph{F de Snedecor con $p$ y $q$ grados de libertad}.
+Se usa para comparar varianzas y en las pruebas globales de regresión.
+\end{definicion}
+
+%\newpage
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{El Modelo de Regresión Lineal Simple}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Especificación del modelo}
+
+El modelo de \textbf{regresión lineal simple} relaciona una variable respuesta $Y$ con una única variable predictora $x$ mediante:
+
+\begin{equation}\label{eq:modelo}
+  y_i = \beta_0 + \beta_1 x_i + \varepsilon_i,
+  \qquad i = 1, 2, \ldots, n
+\end{equation}
+
+donde:
+\begin{itemize}[nosep]
+  \item $y_i$: valor observado de la variable respuesta en la observación $i$.
+  \item $x_i$: valor del predictor en la observación $i$ (fijo, no aleatorio).
+  \item $\beta_0$: intercepto poblacional (desconocido).
+  \item $\beta_1$: pendiente poblacional (desconocida).
+  \item $\varepsilon_i$: error aleatorio de la observación $i$.
+\end{itemize}
+
+\begin{definicion}{Supuestos del modelo (Gauss-Markov + normalidad)}{supuestos}
+Los errores $\varepsilon_i$ satisfacen:
+\begin{enumerate}[label=\textbf{S\arabic*.}, leftmargin=2.5cm]
+  \item \textbf{Media cero:} $\E{\varepsilon_i} = 0$
+  \item \textbf{Homocedasticidad:} $\Var{\varepsilon_i} = \sigma^2 < \infty$
+        \quad para todo $i$
+  \item \textbf{No correlación:} $\Cov{\varepsilon_i}{\varepsilon_j} = 0$
+        para $i \neq j$
+  \item \textbf{Normalidad:}
+        $\varepsilon_i \overset{\text{iid}}{\sim} \mathcal{N}(0,\sigma^2)$
+\end{enumerate}
+S4 implica S1--S3. Los supuestos S1--S3 bastan para la insesgadez y el
+teorema de Gauss-Markov; S4 se necesita para las distribuciones exactas de
+los estadísticos de prueba.
+\end{definicion}
+
+\bigskip
+
+\subsection{Estimadores de Mínimos Cuadrados Ordinarios }
+
+Conocido en inglés como Ordinary Least Squares $\to $OLS, dado un conjunto de $n$ observaciones $\{(x_i, y_i)\}_{i=1}^n$, el modelo de regresión lineal simple postula:
+
+\[
+y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
+\]
+%
+donde $\varepsilon_i$ es el error aleatorio. El objetivo es encontrar los estimadores $\hat{\beta}_0$ y $\hat{\beta}_1$ que minimizan la suma de cuadrados de los residuos:
+
+\[
+\text{RSS}(\beta_0, \beta_1) = \sum_{i=1}^n (y_i - \beta_0 - \beta_1 x_i)^2.
+\]
+En este caso, RSS son las siglas en inglés de Residual Sum of Squares (en español, Suma de Cuadrados de los Residuos). También se le conoce comúnmente como SSE (Sum of Squared Errors).
+Para minimizar $\text{RSS}$, derivamos parcialmente con respecto a $\beta_0$ y $\beta_1$ e igualamos a cero.
+
+\subsection*{Derivada con respecto a $\beta_0$}
+
+\[
+\frac{\partial \text{RSS}}{\partial \beta_0} = -2 \sum_{i=1}^n (y_i - \beta_0 - \beta_1 x_i) = 0
+\]
+
+Dividiendo entre $-2$:
+
+\[
+\sum_{i=1}^n (y_i - \beta_0 - \beta_1 x_i) = 0
+\]
+
+Desarrollando:
+
+\[
+\sum_{i=1}^n y_i - \sum_{i=1}^n \beta_0 - \beta_1 \sum_{i=1}^n x_i = 0
+\]
+
+Como $\sum_{i=1}^n \beta_0 = n\beta_0$, obtenemos la primera ecuación normal:
+
+\[
+\boxed{\sum_{i=1}^n y_i = n\beta_0 + \beta_1 \sum_{i=1}^n x_i}
+\]
+
+\subsection*{Derivada con respecto a $\beta_1$}
+
+\[
+\frac{\partial \text{RSS}}{\partial \beta_1} = -2 \sum_{i=1}^n x_i (y_i - \beta_0 - \beta_1 x_i) = 0
+\]
+
+Dividiendo entre $-2$:
+
+\[
+\sum_{i=1}^n x_i (y_i - \beta_0 - \beta_1 x_i) = 0
+\]
+
+Desarrollando:
+
+\[
+\sum_{i=1}^n x_i y_i - \beta_0 \sum_{i=1}^n x_i - \beta_1 \sum_{i=1}^n x_i^2 = 0
+\]
+
+Obtenemos la segunda ecuación normal:
+
+\[
+\boxed{\sum_{i=1}^n x_i y_i = \beta_0 \sum_{i=1}^n x_i + \beta_1 \sum_{i=1}^n x_i^2}
+\]
+
+Al minimizar la suma de cuadrados de los residuos (RSS) e igualar las derivadas parciales a cero, hemos obtenido el siguiente sistema de ecuaciones lineales:
+
+\[
+\begin{cases}
+n\beta_0 + \beta_1 \sum x_i = \sum y_i, \quad &(1) \\[1.2em]
+\beta_0 \sum x_i + \beta_1 \sum x_i^2 = \sum x_i y_i .\quad &(2)
+\end{cases}
+\]
+
+Donde todas las sumatorias son para $i=1,\dots,n$. Ahora procedemos con la resolución paso a paso del Sistema:
+
+\textbf{Paso 1: Despejar $\beta_0$ de la ecuación (1)}
+
+De la ecuación (1):
+\[
+n\beta_0 = \sum y_i - \beta_1 \sum x_i
+\]
+
+Dividiendo todo entre $n$:
+\[
+\beta_0 = \frac{\sum y_i}{n} - \beta_1 \frac{\sum x_i}{n}
+\]
+
+Recordando que $\bar{y} = \frac{1}{n}\sum y_i$ y $\bar{x} = \frac{1}{n}\sum x_i$, obtenemos:
+
+\[
+\boxed{\beta_0 = \bar{y} - \beta_1 \bar{x}}
+\]
+
+\textbf{Paso 2: Sustituir $\beta_0$ en la ecuación (2)}
+
+Sustituimos $\beta_0 = \bar{y} - \beta_1 \bar{x}$ en la ecuación (2):
+
+\[
+(\bar{y} - \beta_1 \bar{x}) \sum x_i + \beta_1 \sum x_i^2 = \sum x_i y_i
+\]
+
+Desarrollamos el primer término:
+\[
+\bar{y} \sum x_i - \beta_1 \bar{x} \sum x_i + \beta_1 \sum x_i^2 = \sum x_i y_i
+\]
+
+Agrupamos los términos que contienen $\beta_1$:
+\[
+\bar{y} \sum x_i + \beta_1 \left( \sum x_i^2 - \bar{x} \sum x_i \right) = \sum x_i y_i
+\]
+
+Despejamos $\beta_1$:
+\[
+\beta_1 \left( \sum x_i^2 - \bar{x} \sum x_i \right) = \sum x_i y_i - \bar{y} \sum x_i
+\]
+
+Por lo tanto:
+\[
+\boxed{\beta_1 = \frac{\sum x_i y_i - \bar{y} \sum x_i}{\sum x_i^2 - \bar{x} \sum x_i}}
+\]
+
+\textbf{Paso 3: Expresar $\beta_1$ en términos de sumas directas}
+
+Recordemos que $\bar{x} = \frac{\sum x_i}{n}$ y $\bar{y} = \frac{\sum y_i}{n}$. Sustituyendo:
+
+Numerador:
+\[
+\sum x_i y_i - \bar{y} \sum x_i = \sum x_i y_i - \frac{\sum y_i}{n} \sum x_i = \frac{n\sum x_i y_i - (\sum x_i)(\sum y_i)}{n}
+\]
+
+Denominador:
+\[
+\sum x_i^2 - \bar{x} \sum x_i = \sum x_i^2 - \frac{(\sum x_i)^2}{n} = \frac{n\sum x_i^2 - (\sum x_i)^2}{n}
+\]
+
+Por tanto, la fracción $\frac{\text{Numerador}}{\text{Denominador}}$ se simplifica (el factor $1/n$ se cancela):
+
+\[
+\boxed{\hat{\beta}_1 = \frac{n\sum x_i y_i - (\sum x_i)(\sum y_i)}{n\sum x_i^2 - (\sum x_i)^2}}
+\]
+
+\textbf{Paso 4: Expresar $\beta_1$ en forma centrada (covarianza/varianza)}
+
+El numerador se puede reescribir como:
+\[
+n\sum x_i y_i - (\sum x_i)(\sum y_i) = \sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})
+\]
+
+El denominador se puede reescribir como:
+\[
+n\sum x_i^2 - (\sum x_i)^2 = \sum_{i=1}^n (x_i - \bar{x})^2
+\]
+
+Por lo tanto:
+\[
+\boxed{\hat{\beta}_1 = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^n (x_i - \bar{x})^2}}
+\]
+
+\textbf{Paso 5: Estimador del intercepto}
+
+Una vez obtenido $\hat{\beta}_1$, regresamos al Paso 1:
+\[
+\boxed{\hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x}}
+\]
+
+\begin{observacion}{}{}
+ 
+La expresión para $\hat{\beta}_1$ se puede reescribir como
+\[
+\boxed{\hat{\beta}_1 = \frac{S_{xy}}{S_{xx}}}
+\]
+donde:
+\[
+S_{xy} = \sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y}), \qquad
+S_{xx} = \sum_{i=1}^n (x_i - \bar{x})^2.
+\]
+A su vez, la ecuación $\hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x}$ implica que:
+\[
+\bar{y} = \hat{\beta}_0 + \hat{\beta}_1 \bar{x},
+\]
+Es decir, la recta de regresión ajustada
+\[
+\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x
+\]
+\textbf{siempre pasa por el centroide} $(\bar{x}, \bar{y})$ de los datos.
+\end{observacion}
+
+
+\begin{observacion}{}{}
+
+Bajo los supuestos del modelo lineal clásico (linealidad, independencia, homocedasticidad y normalidad de errores), los estimadores OLS tienen las siguientes propiedades:
+
+\begin{itemize}
+\item \textbf{Insesgadez:} $\mathbb{E}[\hat{\beta}_0] = \beta_0$ y $\mathbb{E}[\hat{\beta}_1] = \beta_1$
+\item \textbf{Eficiencia:} Tienen varianza mínima entre todos los estimadores lineales insesgados (Teorema de Gauss-Markov)
+\item \textbf{Consistencia:} Convergen en probabilidad al valor verdadero cuando $n \to \infty$
+\item \textbf{Normalidad asintótica:} $\hat{\beta}_1 \sim \mathcal{N}\left(\beta_1, \frac{\sigma^2}{S_{xx}}\right)$
+\end{itemize}
+\end{observacion}
+
+\textbf{Ejemplo Numérico}
+
+Si los datos son:
+
+\[
+\begin{array}{c|ccccc}
+x & 1 & 2 & 3 & 4 & 5 \\
+\hline
+y & 2 & 3 & 4 & 5 & 6
+\end{array}
+\]
+
+Las medias son $\bar{x} = 3$, $\bar{y} = 4$. Calculamos:
+
+\[
+S_{xx} = \sum (x_i - 3)^2 = 10, \qquad S_{xy} = \sum (x_i - 3)(y_i - 4) = 10
+\]
+
+Entonces:
+
+\[
+\hat{\beta}_1 = \frac{10}{10} = 1, \qquad \hat{\beta}_0 = 4 - 1 \cdot 3 = 1
+\]
+
+La recta ajustada es $\hat{y} = 1 + 1 \cdot x$, que efectivamente pasa por $(3, 4)$.
+
+\begin{observacion}{}{}
+Las dos ecuaciones normales son equivalentes a:
+
+\begin{equation}\label{eq:ec1}
+  \sumni e_i = 0
+  \tag{EN1}
+\end{equation}
+\begin{equation}\label{eq:ec2}
+  \sumni x_i\,e_i = 0
+  \tag{EN2}
+\end{equation}
+donde $e_i = y_i - \hy_i$ son los \emph{residuos}. Estas dos condiciones serán cruciales para demostrar la descomposición de la varianza.
+\end{observacion}
+
+\subsection{Propiedades de los estimadores OLS}
+
+Dado que $\hbeta_1 = \sumni k_i\,y_i$ con $k_i = (x_i-\bar{x})/\sxx$:
+
+\begin{proposicion}{Insesgadez de $\hbeta_1$}{insesgada}
+\[
+  \E{\hbeta_1} = \beta_1
+\]
+\textit{Demostración.}
+Sustituyendo $y_i = \beta_0 + \beta_1 x_i + \varepsilon_i$:
+\[
+  \hbeta_1
+    = \sumni k_i(\beta_0 + \beta_1 x_i + \varepsilon_i)
+    = \beta_0\underbrace{\sumni k_i}_{=\,0}
+    + \beta_1\underbrace{\sumni k_i x_i}_{=\,1}
+    + \sumni k_i\varepsilon_i
+\]
+Donde se usan $\sumni k_i = 0$ y $\sumni k_i x_i = 1$ (se verifican fácilmente
+ a partir de la definición de $k_i$). Tomando esperanza y usando S1:
+\[
+  \E{\hbeta_1} = \beta_1 + \sumni k_i\underbrace{\E{\varepsilon_i}}_{=\,0} = \beta_1
+  \hfill\square
+\]
+\end{proposicion}
+
+\begin{proposicion}{Varianzas de los estimadores}{variances}
+\[
+  \Var{\hbeta_1} = \frac{\sigma^2}{\sxx},
+  \qquad
+  \Var{\hbeta_0} = \sigma^2\left(\frac{1}{n} + \frac{\bar{x}^2}{\sxx}\right)
+\]
+\textit{Demostración de $\Var{\hbeta_1}$.} Usando S2 y S3 e independencia:
+\[
+  \Var{\hbeta_1}
+    = \Var{\sumni k_i\varepsilon_i}
+    = \sumni k_i^2\,\sigma^2
+    = \sigma^2\,\frac{\sumni(x_i-\bar{x})^2}{\sxx^2}
+    = \frac{\sigma^2}{\sxx}
+    \hfill\square
+\]
+\textit{Demostración de $\Var{\hbeta_0}$.}
+Como $\hbeta_0 = \bar{y} - \hbeta_1\bar{x}$, y
+$\Var{\bar{y}} = \sigma^2/n$, y $\Cov{\bar{y}}{\hbeta_1} = 0$
+(se demuestra directamente de las definiciones):
+\[
+  \Var{\hbeta_0}
+    = \Var{\bar{y}} + \bar{x}^2\,\Var{\hbeta_1}
+    = \frac{\sigma^2}{n} + \frac{\sigma^2\bar{x}^2}{\sxx}
+    = \sigma^2\!\left(\frac{1}{n} + \frac{\bar{x}^2}{\sxx}\right)
+    \hfill\square
+\]
+\end{proposicion}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Residual Standard Error (RSE)}
+% ══════════════════════════════════════════════════════════════════════════════
+
+Una vez que hemos comprendido que el RSS mide la variabilidad no explicada por el modelo y que los estimadores OLS poseen propiedades deseables como insesgadez y eficiencia, surge la necesidad de contar con una medida que exprese el error típico de los residuos en las unidades originales de la variable respuesta. Es aquí donde el Residual Standard Error (RSE) —también conocido como error estándar de los residuos o desviación típica residual— se presenta como una métrica fundamental para evaluar la precisión predictiva del modelo.
+
+ El RSE se define como la raíz cuadrada del cuadrado medio de los residuos, ajustado por los grados de libertad del modelo
+ $$\mathrm{RSE}=\sqrt{\frac{\mathrm{RSS}}{n-p-1}}$$
+ donde $n$ es el número de observaciones y $p$ el número de predictores. Este ajuste por grados de libertad corrige el sesgo que tendría la estimación si simplemente dividiéramos por $n$, proporcionando así un estimador insesgado de la desviación estándar del error $\sigma$. 
+ 
+ El RSE tiene una interpretación directa y práctica: representa la desviación típica promedio de los puntos observados con respecto a la recta de regresión, es decir, cuánto se desvían típicamente los valores reales de $y$ de las predicciones del modelo. Un RSE pequeño indica que el modelo se ajusta bien a los datos y que las predicciones son precisas, mientras que un RSE grande sugiere una alta variabilidad residual no explicada, lo cual puede deberse a la omisión de variables relevantes, a la presencia de relaciones no lineales o simplemente a la naturaleza ruidosa del fenómeno estudiado. A diferencia del $R^2$, que es una medida relativa y adimensional, el RSE se expresa en las mismas unidades que la variable dependiente, lo que lo convierte en una herramienta de diagnóstico particularmente útil para comparar modelos aplicados a un mismo problema o para comunicar el error típico de las predicciones a un público no especializado.
+
+
+
+Para obtener este estimador, es necesario conocer el valor esperado del RSS bajo los supuestos del modelo lineal. Utilizando la representación matricial del modelo, donde la matriz de proyección $\mathbf{H} = \mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T$ (con $\mathbf{X}$ incluyendo el intercepto) proyecta las observaciones sobre el espacio de las variables predictoras, los residuos se expresan como $\mathbf{e} = (\mathbf{I} - \mathbf{H})\mathbf{y}$. Dado que $\mathbf{I} - \mathbf{H}$ es simétrica e idempotente y tiene traza igual a $n - p - 1$, se cumple que:
+
+\[
+\mathbb{E}[RSS] = \mathbb{E}[\mathbf{y}^T(\mathbf{I} - \mathbf{H})\mathbf{y}] = \sigma^2 \cdot \text{tr}(\mathbf{I} - \mathbf{H}) = \sigma^2 (n - p - 1)
+\]
+
+donde $p$ es el número de variables predictoras. En el caso particular de la regresión lineal simple ($p=1$), esta expresión se reduce a:
+
+\[
+\boxed{\mathbb{E}[RSS] = (n-2)\sigma^2}
+\]
+
+La interpretación de este resultado es clave: el RSS no es un estimador insesgado de $\sigma^2$ por sí mismo, ya que su valor esperado es $(n-2)\sigma^2$ y no $n\sigma^2$. Esta pérdida de $2$ grados de libertad refleja el hecho de que hemos estimado dos parámetros ($\beta_0$ y $\beta_1$) a partir de los datos, lo que reduce la cantidad de información independiente disponible para estimar la varianza residual.
+
+A partir de la relación anterior, se deduce inmediatamente que:
+
+\[
+\mathbb{E}\left[\frac{RSS}{n-2}\right] = \sigma^2
+\]
+
+Por lo tanto, el estadístico $\hat{\sigma}^2 = \frac{RSS}{n-2}$ es un estimador \textbf{insesgado} de la varianza del error $\sigma^2$. Su raíz cuadrada positiva es lo que denominamos \emph{Residual Standard Error} (RSE):
+
+\[
+\boxed{
+RSE = \hat{\sigma} = \sqrt{\frac{RSS}{n-2}} = \sqrt{\frac{\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}{n-2}}
+}
+\]
+
+
+\begin{itemize}\item[-] $n-p-1$ es la fórmula general para cualquier modelo de regresión lineal con $p$ variables predictoras (sin contar el intercepto).
+\item[-] $n-2$ es el caso particular cuando $p=1$ (regresión lineal simple).
+\end{itemize}
+
+Si en la fórmula general reemplazamos $p=1$, se obtiene:
+
+$$
+n-p-1=n-1-1=n-2
+$$
+\subsection{Interpretación}
+
+\begin{itemize}
+  \item El RSE está en las \textbf{mismas unidades} que $y$, lo que facilita
+        su interpretación directa.
+  \item Indica cuánto se desvían las predicciones del modelo respecto a los
+        valores reales \textbf{en promedio}.
+  \item Un RSE cercano a 0 indica ajuste casi perfecto. Sin embargo, para
+        evaluar si el RSE es ``pequeño'' o ``grande'' debe compararse con la
+        escala de la variable $y$ (por ejemplo, con $\bar{y}$).
+  \item El RSE es el estimador de $\sigma$, la dispersión intrínseca de $y$
+        no explicada por el modelo.
+\end{itemize}
+
+\textbf{Ejemplo:}
+Consideremos los siguientes datos de 5 observaciones, donde deseamos predecir $y$ en función de $x$:
+
+\[
+\begin{array}{c|ccccc}
+i & 1 & 2 & 3 & 4 & 5 \\
+\hline
+x_i & 1 & 2 & 3 & 4 & 5 \\
+y_i & 2.0 & 3.5 & 4.0 & 5.5 & 6.0
+\end{array}
+\]
+
+Ajustemos el Modelo por Mínimos Cuadrados: primero cálculamos  medias
+
+\[
+\bar{x} = \frac{1+2+3+4+5}{5} = 3
+\]
+\[
+\bar{y} = \frac{2.0 + 3.5 + 4.0 + 5.5 + 6.0}{5} = 4.2
+\]
+
+ahora las sumas de cuadrados
+
+\[
+S_{xx} = \sum_{i=1}^{5} (x_i - \bar{x})^2 = (1-3)^2 + (2-3)^2 + (3-3)^2 + (4-3)^2 + (5-3)^2
+\]
+\[
+S_{xx} = 4 + 1 + 0 + 1 + 4 = 10
+\]
+
+\[
+S_{xy} = \sum_{i=1}^{5} (x_i - \bar{x})(y_i - \bar{y})
+\]
+\[
+= (-2)(-2.2) + (-1)(-0.7) + (0)(-0.2) + (1)(1.3) + (2)(1.8)
+\]
+\[
+= 4.4 + 0.7 + 0 + 1.3 + 3.6 = 10
+\]
+
+Los estimadores stimadores OLS son:
+
+\[
+\hat{\beta}_1 = \frac{S_{xy}}{S_{xx}} = \frac{10}{10} = 1
+\]
+\[
+\hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x} = 4.2 - 1 \cdot 3 = 1.2
+\]
+
+El modelo ajustado es:
+
+\[
+\hat{y}_i = 1.2 + 1 \cdot x_i
+\]
+
+Ahora calculamos el RSS: los residuos son $e_i = y_i - \hat{y}_i$.
+
+\[
+\begin{array}{c|ccccc}
+i & 1 & 2 & 3 & 4 & 5 \\
+\hline
+x_i & 1 & 2 & 3 & 4 & 5 \\
+y_i & 2.0 & 3.5 & 4.0 & 5.5 & 6.0 \\
+\hat{y}_i & 2.2 & 3.2 & 4.2 & 5.2 & 6.2 \\
+e_i & -0.2 & 0.3 & -0.2 & 0.3 & -0.2 \\
+e_i^2 & 0.04 & 0.09 & 0.04 & 0.09 & 0.04
+\end{array}
+\]
+
+Sumando:
+
+\[
+RSS = \sum_{i=1}^{5} e_i^2 = 0.04 + 0.09 + 0.04 + 0.09 + 0.04 = 0.30
+\]
+
+Ahora calculamos el RSE: para regresión lineal simple, $p = 1$ (un predictor). Los grados de libertad del error son:
+
+\[
+n - p - 1 = 5 - 1 - 1 = 3
+\]
+
+Por lo tanto:
+
+\[
+RSE = \sqrt{\frac{RSS}{n - p - 1}} = \sqrt{\frac{0.30}{3}} = \sqrt{0.10} \approx 0.316
+\]
+
+\section{Interpretación}
+
+\begin{itemize}
+    \item El \textbf{RSS = 0.30} es la suma total de los errores al cuadrado. Su magnitud depende de la escala de la variable $y$ y del número de observaciones.
+    \item El \textbf{RSE $\approx$ 0.316} nos indica que, en promedio, las predicciones se desvían aproximadamente 0.316 unidades de la variable $y$.
+\end{itemize}
+
+\section{Comparación al Duplicar los Datos}
+
+Para apreciar la diferencia entre ambas métricas, duplicamos el conjunto de datos (añadimos 5 observaciones idénticas) y recalculamos.
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Situación & $n$ & $RSS$ & $RSE$ \\
+\midrule
+Datos originales & 5 & 0.30 & 0.316 \\
+Datos duplicados & 10 & 0.60 & 0.274 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Observaciones}
+
+\begin{enumerate}
+    \item \textbf{El RSS se duplica} (pasa de 0.30 a 0.60) porque es una suma acumulativa. Al añadir más datos, el error total aumenta, aunque el modelo sea igual de bueno.
+    \item \textbf{El RSE disminuye ligeramente} (de 0.316 a 0.274) porque al tener más datos, la estimación de la varianza del error se vuelve más precisa y el denominador $(n - p - 1)$ crece, reduciendo el error estándar promedio.
+\end{enumerate}
+
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Coeficiente de Determinación $R^2$}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Las sumas de cuadrados}
+
+\begin{definicion}{Sumas de cuadrados fundamentales}{sc}
+Para un modelo ajustado con valores predichos $\hy_i$:
+\begin{align*}
+  TSS &= \sumni(y_i - \bar{y})^2
+    & &\text{\emph{Total Sum of Squares} (variabilidad total de $y$)}\\[4pt]
+  RSS &= \sumni(y_i - \hy_i)^2 = \sumni e_i^2
+    & &\text{\emph{Residual Sum of Squares} (variabilidad no explicada)}\\[4pt]
+  ESS &= \sumni(\hy_i - \bar{y})^2
+    & &\text{\emph{Explained Sum of Squares} (variabilidad explicada)}
+\end{align*}
+\end{definicion}
+
+\subsection{Demostración: $TSS = ESS + RSS$}
+
+\subsubsection*{Paso 1: Descomposición algebraica}
+
+Sumamos y restamos $\hy_i$ en la diferencia $y_i - \bar{y}$:
+\[
+  y_i - \bar{y}
+    = \underbrace{(y_i - \hy_i)}_{e_i}
+    + \underbrace{(\hy_i - \bar{y})}_{\hat{d}_i}
+\]
+
+Elevamos al cuadrado y sumamos sobre $i$:
+\[
+  TSS
+    = \sumni(y_i-\bar{y})^2
+    = \sumni e_i^2 + 2\sumni e_i\hat{d}_i + \sumni\hat{d}_i^2
+    = RSS + 2\sumni e_i(\hy_i-\bar{y}) + ESS
+\]
+
+\subsubsection*{Paso 2: El término cruzado es cero}
+
+Demostramos que $\displaystyle\sumni e_i(\hy_i - \bar{y}) = 0$.
+
+Expandimos usando $\hy_i = \hbeta_0 + \hbeta_1 x_i$:
+\begin{align*}
+  \sumni e_i(\hy_i-\bar{y})
+    &= \sumni e_i\hy_i - \bar{y}\sumni e_i\\[4pt]
+    &= \sumni e_i(\hbeta_0 + \hbeta_1 x_i) - \bar{y}\sumni e_i\\[4pt]
+    &= \hbeta_0\underbrace{\sumni e_i}_{\mathclap{=\,0\ \text{por EN1}}}
+     + \hbeta_1\underbrace{\sumni x_i e_i}_{\mathclap{=\,0\ \text{por EN2}}}
+     - \bar{y}\underbrace{\sumni e_i}_{\mathclap{=\,0\ \text{por EN1}}}
+    = 0
+\end{align*}
+
+\subsubsection*{Paso 3: Conclusión}
+
+\begin{resultado}{Descomposición fundamental de la varianza}{anova}
+\[
+  \boxed{TSS = ESS + RSS}
+\]
+Esta igualdad expresa que la variabilidad total de $y$ se descompone en la
+parte \emph{explicada} por el modelo más la parte \emph{residual} no explicada.
+\end{resultado}
+
+\subsection{Definición de $R^2$}
+
+\begin{resultado}{Coeficiente de determinación $R^2$}{r2}
+Dividiendo la descomposición $TSS = ESS + RSS$ entre $TSS$:
+\[
+  1 = \frac{ESS}{TSS} + \frac{RSS}{TSS}
+\]
+Se define el \emph{coeficiente de determinación} como la proporción de la
+variabilidad explicada:
+\[
+  \boxed{
+    R^2 = \frac{ESS}{TSS} = 1 - \frac{RSS}{TSS}
+  }
+\]
+\end{resultado}
+
+\subsection{Propiedades de $R^2$}
+
+\begin{itemize}
+  \item $0 \leq R^2 \leq 1$ (se puede demostrar de la descomposición).
+  \item $R^2 = 1$: el modelo explica \emph{toda} la variabilidad; $RSS = 0$.
+  \item $R^2 = 0$: el modelo no explica nada mejor que predecir siempre $\bar{y}$; $ESS = 0$.
+  \item $R^2 > 0$ siempre que el modelo incluya un intercepto $\beta_0$
+        (gracias a la condición EN1).
+\end{itemize}
+
+\subsection{Demostración: $R^2 = r_{xy}^2$ en regresión simple}
+
+Esta es la propiedad más elegante del caso simple. Calculamos $ESS$:
+\[
+  ESS = \sumni(\hy_i - \bar{y})^2
+      = \sumni(\hbeta_0 + \hbeta_1 x_i - \bar{y})^2
+\]
+
+Usando $\hbeta_0 = \bar{y} - \hbeta_1\bar{x}$:
+\[
+  \hy_i - \bar{y}
+    = (\bar{y} - \hbeta_1\bar{x}) + \hbeta_1 x_i - \bar{y}
+    = \hbeta_1(x_i - \bar{x})
+\]
+
+Por lo tanto:
+\[
+  ESS = \hbeta_1^2\sumni(x_i-\bar{x})^2 = \hbeta_1^2\,\sxx
+\]
+
+Sustituyendo $\hbeta_1 = \sxy/\sxx$:
+\[
+  ESS = \frac{\sxy^2}{\sxx^2}\cdot\sxx = \frac{\sxy^2}{\sxx}
+\]
+
+Entonces:
+\[
+  R^2
+    = \frac{ESS}{TSS}
+    = \frac{\sxy^2/\sxx}{\syy}
+    = \frac{\sxy^2}{\sxx\,\syy}
+    = \left(\frac{\sxy}{\sqrt{\sxx\,\syy}}\right)^{\!2}
+    = r_{xy}^2
+\]
+
+\begin{resultado}{$R^2$ como cuadrado de la correlación (regresión simple)}{r2corr}
+\[
+  \boxed{R^2 = r_{xy}^2}
+\]
+En regresión lineal \emph{simple}, el coeficiente de determinación es
+exactamente el cuadrado del coeficiente de correlación de Pearson entre
+$x$ e $y$.
+\end{resultado}
+
+\subsection{$R^2$ ajustado}
+
+\begin{definicion}{$R^2$ ajustado}{r2adj}
+El $R^2$ convencional nunca decrece al agregar variables. El \emph{$R^2$
+ajustado} penaliza la complejidad del modelo usando los grados de libertad:
+\[
+  R^2_{\text{adj}}
+    = 1 - \frac{RSS/(n-p-1)}{TSS/(n-1)}
+    = 1 - (1-R^2)\frac{n-1}{n-p-1}
+\]
+En regresión simple ($p=1$): $R^2_{\text{adj}} = 1-(1-R^2)\dfrac{n-1}{n-2}$.
+
+El $R^2$ ajustado \emph{puede decrecer} al añadir predictores irrelevantes.
+\end{definicion}
+
+%\newpage
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{F-statistic}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Motivación y contraste de hipótesis}
+
+Mientras que $R^2$ mide la proporción de varianza explicada, el
+\textbf{F-statistic} responde a una pregunta distinta: ¿es el poder explicativo
+del modelo \emph{estadísticamente significativo} o podría haberse obtenido
+por azar?
+
+En regresión simple esto se traduce en el contraste:
+\[
+  H_0:\; \beta_1 = 0
+  \qquad \text{vs} \qquad
+  H_1:\; \beta_1 \neq 0
+\]
+Bajo $H_0$, el predictor $x$ no tiene ninguna relación lineal con $y$.
+
+\subsection{Distribuciones de las sumas de cuadrados bajo $H_0$}
+
+\begin{proposicion}{Distribución de $RSS/\sigma^2$}{disrss}
+Bajo los supuestos del modelo (en particular S4):
+\[
+  \frac{RSS}{\sigma^2} \sim \chi^2_{n-2}
+\]
+\textit{Idea de la demostración.} Los residuos $e_i$ son combinaciones
+lineales de $\varepsilon_i$, proyectados sobre un subespacio de dimensión
+$n-2$ (se restan 2 grados de libertad por estimar $\beta_0$ y $\beta_1$). Por
+el Teorema de Cochran, la forma cuadrática resultante sigue una $\chi^2$
+con $n-2$ grados de libertad.
+\end{proposicion}
+
+\begin{proposicion}{Distribución de $ESS/\sigma^2$ bajo $H_0$}{disess}
+Bajo $H_0: \beta_1 = 0$:
+\[
+  \frac{ESS}{\sigma^2} \sim \chi^2_1
+\]
+con 1 grado de libertad (uno por cada $\beta$ restringido bajo $H_0$).
+\end{proposicion}
+
+\begin{proposicion}{Independencia de $ESS$ y $RSS$}{indep}
+Por el Teorema de Cochran, $ESS$ y $RSS$ son \textbf{independientes}, ya
+que las matrices de proyección correspondientes son ortogonales.
+\end{proposicion}
+
+\subsection{Construcción del estadístico F}
+
+Por la Definición~\ref{def:fdist}: si $U \sim \chi^2_p$ y $V \sim \chi^2_q$
+son independientes, el cociente $(U/p)/(V/q)$ sigue una distribución $F_{p,q}$.
+
+Aplicando esto con $U = ESS/\sigma^2 \sim \chi^2_1$ y
+$V = RSS/\sigma^2 \sim \chi^2_{n-2}$ independientes:
+
+\[
+  F
+    = \frac{(ESS/\sigma^2)\,/\,1}{(RSS/\sigma^2)\,/\,(n-2)}
+    = \frac{ESS/1}{RSS/(n-2)}
+    = \frac{ESS}{MSE}
+\]
+
+Los $\sigma^2$ se cancelan. Definiendo las medias cuadráticas:
+\[
+  MSR = \frac{ESS}{1} = ESS
+  \qquad \text{(Mean Square Regression)}
+\]
+\[
+  MSE = \frac{RSS}{n-2}
+  \qquad \text{(Mean Square Error)} = \hat{\sigma}^2 = RSE^2
+\]
+
+\begin{resultado}{F-statistic para regresión simple}{fstat}
+\[
+  \boxed{
+    F = \frac{MSR}{MSE}
+      = \frac{ESS}{RSS/(n-2)}
+      \;\sim\; F_{1,\,n-2}
+      \quad \text{bajo } H_0:\,\beta_1=0
+  }
+\]
+\end{resultado}
+
+\begin{notabox}
+\textbf{Regla de decisión.}
+\begin{itemize}[nosep]
+  \item Bajo $H_0$, se espera $F \approx 1$ (ambas medias cuadráticas
+        estiman $\sigma^2$).
+  \item Valores grandes de $F$ indican que el modelo explica mucho más de lo
+        que cabría esperar por azar.
+  \item Se calcula el p-valor: $p = P(F_{1,n-2} \geq F_{\text{obs}})$. Si
+        $p < 0.05$, se rechaza $H_0$ al nivel de significancia del 5\%.
+\end{itemize}
+\end{notabox}
+
+\subsection{Relación entre F y $R^2$}
+
+De la descomposición $TSS = ESS + RSS$, despejamos $ESS = R^2\cdot TSS$ y
+$RSS = (1-R^2)\cdot TSS$:
+
+\[
+  F
+    = \frac{ESS}{RSS/(n-2)}
+    = \frac{R^2\cdot TSS}{(1-R^2)\cdot TSS/(n-2)}
+    = \frac{R^2\,(n-2)}{1-R^2}
+\]
+
+\begin{resultado}{Equivalencia F -- $R^2$}{fr2}
+\[
+  \boxed{
+    F = \frac{R^2\,(n-2)}{1-R^2}
+  }
+\]
+$F$ y $R^2$ contienen exactamente la misma información sobre el ajuste,
+pero $F$ la contextualiza respecto al tamaño muestral $n$.
+\end{resultado}
+
+\subsection{Equivalencia $F = t^2$ en regresión simple}
+
+Esta es la propiedad más importante exclusiva del caso simple.
+El estadístico $t$ para probar $H_0: \beta_1=0$ es:
+
+\[
+  t
+    = \frac{\hbeta_1}{\widehat{SE}(\hbeta_1)}
+    = \frac{\hbeta_1}{\hat{\sigma}/\sqrt{\sxx}}
+    \;\sim\; t_{n-2}
+    \quad \text{bajo } H_0
+\]
+
+Elevamos al cuadrado y desarrollamos:
+\[
+  t^2
+    = \frac{\hbeta_1^2\,\sxx}{\hat{\sigma}^2}
+    = \frac{\hbeta_1^2\,\sxx}{RSS/(n-2)}
+\]
+
+Recordando que $ESS = \hbeta_1^2\,\sxx$ (demostrado en la sección anterior):
+
+\[
+  t^2
+    = \frac{ESS}{RSS/(n-2)}
+    = F
+\]
+
+\begin{resultado}{$F = t^2$ en regresión simple}{ft2}
+\[
+  \boxed{F = t^2_{\hbeta_1}}
+\]
+En regresión simple, la prueba F global y la prueba t sobre $\beta_1$ son
+\textbf{exactamente equivalentes}: producen el mismo p-valor. Esto se debe a que
+$F_{1,k} = t_k^2$ (propiedad de las distribuciones).
+\end{resultado}
+
+%\newpage
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Resumen}
+% ══════════════════════════════════════════════════════════════════════════════
+
+Las tres métricas son facetas distintas del mismo objeto algebraico:
+la descomposición $TSS = ESS + RSS$, que a su vez descansa en las dos
+ecuaciones normales OLS ($\sum e_i = 0$ y $\sum x_i e_i = 0$).
+
+\bigskip
+
+\begin{center}
+\renewcommand{\arraystretch}{1.8}
+\begin{tabular}{>{\bfseries}l p{3.8cm} p{4.5cm} p{3cm}}
+\toprule
+Métrica & Fórmula & Pregunta que responde & Unidades \\
+\midrule
+RSE
+  & $\displaystyle\sqrt{\frac{RSS}{n-2}}$
+  & ¿Qué tan grandes son los errores de predicción?
+  & Mismas que $y$ \\
+
+$R^2$
+  & $\displaystyle 1 - \frac{RSS}{TSS} = r_{xy}^2$
+  & ¿Qué fracción de la varianza de $y$ explica el modelo?
+  & Adimensional $[0,1]$ \\
+
+$F$
+  & $\displaystyle\frac{ESS}{RSS/(n-2)}$
+  & ¿Es el modelo estadísticamente significativo?
+  & Adimensional \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\bigskip
+
+\subsection*{Cadena lógica de las demostraciones}
+
+\[
+  \underbrace{\sumni e_i = 0,\;\sumni x_i e_i = 0}_{\text{Ecuaciones normales OLS}}
+  \;\Longrightarrow\;
+  \underbrace{TSS = ESS + RSS}_{\text{Descomposición}}
+  \;\Longrightarrow\;
+  \begin{cases}
+    R^2 = 1 - RSS/TSS \\[4pt]
+    F = \dfrac{ESS}{RSS/(n-2)}
+  \end{cases}
+\]
+
+\[
+  \underbrace{\E{RSS} = (n-2)\sigma^2}_{\text{Insesgadez}}
+  \;\Longrightarrow\;
+  RSE = \sqrt{\dfrac{RSS}{n-2}}
+\]
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\end{document}
+% ══════════════════════════════════════════════════════════════════════════════

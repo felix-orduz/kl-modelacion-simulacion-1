@@ -1,0 +1,993 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[english]{babel}
+\usepackage{amssymb}
+\usepackage{graphics}
+\usepackage{epsfig}
+\usepackage{amscd}
+\usepackage{amsfonts}
+\usepackage{amsbsy}
+\usepackage{float}
+\usepackage{algorithmicx}
+
+\usepackage{booktabs}
+\usepackage{mathrsfs}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{overpic}
+\usepackage{dsfont}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+
+\newtheorem {theorem} {Theorem}
+\newtheorem {prop} [theorem] {Proposition}
+\newtheorem {corollary}{Corollary}
+\newtheorem {lemma} [theorem] {Lemma}
+\newtheorem {definition}{Definición}
+\newtheorem {remark} {Remark}
+\newtheorem {example}{Example}
+
+\title{Elementos Matemáticos Fundamentales para un Primer Modelo de Predicción con Red Neuronal}
+\author{Modelado y simulación I\\
+John A. Arredondo }
+\date{}
+
+\begin{document}
+
+\maketitle
+
+
+Las redes neuronales artificiales (RNA) son modelos computacionales inspirados en el cerebro biológico que permiten aprender relaciones complejas en los datos. Matemáticamente, una RNA es una función no lineal parametrizada $f: \mathbb{R}^n \to \mathbb{R}^m$ que transforma entradas en salidas mediante composiciones de transformaciones lineales y no lineales.
+
+\,
+
+\begin{definition} Llamaremos neurona artificial a la unidad fundamental de procesamiento en una RNA. Para una neurona con $n$ entradas, su operación se define como:
+%
+\begin{align}
+z &= \sum_{i=1}^{n} w_i x_i + b = \mathbf{w}^T \mathbf{x} + b \\
+a &= \sigma(z)
+\end{align}
+
+donde:
+\begin{itemize}
+\item $\mathbf{x} = [x_1, x_2, \dots, x_n]^T$ es el vector de entradas
+\item $\mathbf{w} = [w_1, w_2, \dots, w_n]^T$ es el vector de pesos
+\item $b$ es el término de bias (sesgo)
+\item $z$ es la pre-activación (combinación lineal)
+\item $\sigma$ es la función de activación
+\item $a$ es la activación de salida
+\end{itemize}
+\end{definition}
+
+La evolución histórica de las redes neuronales se podria titular asi "Del Perceptrón a las RNA Modernas"
+
+\section{El Perceptrón Original (1957)}
+
+El perceptrón fue el primer modelo de neurona artificial desarrollado por Frank Rosenblatt. Matemáticamente, es extremadamente simple:
+
+\begin{align}
+z &= \mathbf{w}^T \mathbf{x} + b \\
+\hat{y} &= 
+\begin{cases} 
+1 & \text{si } z \geq 0 \\
+0 & \text{si } z < 0
+\end{cases}
+\end{align}
+
+Sin embargo, presenta varias limitaciones críticas:
+
+\begin{itemize}
+\item Solo puede resolver problemas \textbf{linealmente separables}
+\item No puede aprender la función XOR (demostrado por Minsky \& Papert, 1969)
+\item Función de activación no diferenciable (escalón)
+\end{itemize}
+
+Las redes neuronales modernas (MLP) superan estas limitaciones mediante:
+
+\begin{align}
+\mathbf{z}^{[1]} &= \mathbf{W}^{[1]} \mathbf{x} + \mathbf{b}^{[1]} \\
+\mathbf{a}^{[1]} &= \sigma(\mathbf{z}^{[1]}) \quad \text{(funciÃ³n no lineal diferenciable)} \\
+\mathbf{z}^{[2]} &= \mathbf{W}^{[2]} \mathbf{a}^{[1]} + \mathbf{b}^{[2]} \\
+\mathbf{a}^{[2]} &= \sigma(\mathbf{z}^{[2]}) \\
+&\vdots \\
+\hat{y} &= \mathbf{z}^{[L]} \quad \text{(para regresión)}
+\end{align}
+
+
+El poder real de las MLP viene del \textbf{teorema de aproximación universal} (Cybenko, 1989):
+
+\begin{quote}
+`Una red neuronal con al menos una capa oculta y una función de activación no lineal puede aproximar con precisión arbitraria cualquier función continua en un conjunto compacto.'
+\end{quote}
+
+Esto significa que mientras el perceptrón solo puede aprender líneas rectas, una MLP puede aprender fronteras de decisión arbitrariamente complejas. El teorema formal es el siguiente.
+
+\begin{theorem}
+Sea $C\left(X, \mathbb{R}^m\right)$ el conjunto de funciones continuas desde un subconjunto $X$ de una espacio euclidiano $\mathbb{R}^n$ a un espacio euclidiano $\mathbb{R}^m$. Sea $\sigma \in C(\mathbb{R}, \mathbb{R})$, donde $(\sigma \circ x)_i=\sigma\left(x_i\right)$, de modo que $\sigma \circ x$ denota $\sigma$ aplicado a cada componente de $x$. Entonces $\sigma$ no es polinómico si y sólo si para todo $n \in \mathbb{N}, m \in \mathbb{N}$, conjunto compacto $K \subseteq \mathbb{R}^n, f \in C\left(K, \mathbb{R}^m\right), \varepsilon>0$ existe $k \in \mathbb{N}, A \in \mathbb{R}^{k \times n}, b \in \mathbb{R}^k$, $C \in \mathbb{R}^{m \times k}$ de manera que
+
+$$
+\sup _{x \in K}\|f(x)-g(x)\|<\varepsilon
+$$
+%
+donde $g(x)=C \cdot(\sigma \circ(A \cdot x+b))$.
+\end{theorem}
+
+\section{Introducción a la Función XOR}
+
+\begin{definition}
+    La función XOR (OR exclusivo) es una operación lógica fundamental definida para dos variables binarias $x_1, x_2 \in \{0,1\}$ como:
+
+\begin{equation}
+\text{XOR}(x_1, x_2) = 
+\begin{cases}
+0 & \text{si } x_1 = x_2 \\
+1 & \text{si } x_1 \neq x_2
+\end{cases}
+\end{equation}
+\end{definition}
+
+\newpage
+Esta función se representa en una \textbf{Tabla de Verdad} como:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ccc}
+\toprule
+$x_1$ & $x_2$ & $\text{XOR}(x_1, x_2)$ \\
+\midrule
+0 & 0 & 0 \\
+0 & 1 & 1 \\
+1 & 0 & 1 \\
+1 & 1 & 0 \\
+\bottomrule
+\end{tabular}
+\caption{Tabla de verdad de la función XOR}
+\end{table}
+
+Y la función XOR puede expresarse algebraicamente como:
+
+\begin{align}
+\text{XOR}(x_1, x_2) &= (x_1 \lor x_2) \land \neg(x_1 \land x_2) \\
+&= x_1 \oplus x_2 \\
+&= x_1 + x_2 - 2x_1x_2 \quad \text{(en aritmética modular 2)}
+\end{align}
+
+Ahora veamos el Perceptrón y su limitación principal. Un perceptrón para dos entradas implementa la función:
+
+\begin{equation}
+f(x_1, x_2) = 
+\begin{cases}
+1 & \text{si } w_1x_1 + w_2x_2 + b \geq 0 \\
+0 & \text{si } w_1x_1 + w_2x_2 + b < 0
+\end{cases}
+\end{equation}
+
+donde $w_1, w_2$ son pesos y $b$ es el bias. Geométricamente, el perceptrón define un hiperplano en $\mathbb{R}^2$:
+
+\begin{equation}
+w_1x_1 + w_2x_2 + b = 0,
+\end{equation}
+
+que separa el espacio en dos regiones: una donde la función devuelve 1 y otra donde devuelve 0.
+
+Ahora vamos a revisar la demostración de la Imposibilidad de uso de la función XOR. Para que el perceptrón implemente XOR, deben existir $w_1, w_2, b$ tales que:
+
+\begin{align}
+\text{Para } (0,0) \rightarrow 0: &\quad w_1\cdot 0 + w_2\cdot 0 + b < 0 \Rightarrow b < 0 \label{eq1} \\
+\text{Para } (0,1) \rightarrow 1: &\quad w_1\cdot 0 + w_2\cdot 1 + b \geq 0 \Rightarrow w_2 + b \geq 0 \label{eq2} \\
+\text{Para } (1,0) \rightarrow 1: &\quad w_1\cdot 1 + w_2\cdot 0 + b \geq 0 \Rightarrow w_1 + b \geq 0 \label{eq3} \\
+\text{Para } (1,1) \rightarrow 0: &\quad w_1\cdot 1 + w_2\cdot 1 + b < 0 \Rightarrow w_1 + w_2 + b < 0 \label{eq4}
+\end{align}
+
+si ahora procedemos  por contradicción, sumando las ecuaciones (\ref{eq2}) y (\ref{eq3}):
+
+\begin{equation}
+(w_2 + b) + (w_1 + b) \geq 0 \Rightarrow w_1 + w_2 + 2b \geq 0 \label{eq5}
+\end{equation}
+
+De la ecuación (\ref{eq1}) sabemos que $b < 0$, por lo tanto:
+
+\begin{equation}
+w_1 + w_2 + 2b < w_1 + w_2 + b \quad \text{(pues $b < 0$)} \label{eq6}
+\end{equation}
+
+Combinando (\ref{eq4}), (\ref{eq5}) y (\ref{eq6}):
+
+\begin{equation}
+w_1 + w_2 + 2b \geq 0 > w_1 + w_2 + b
+\end{equation}
+
+Pero esto implica:
+
+\begin{equation}
+w_1 + w_2 + 2b \geq 0 > w_1 + w_2 + b \Rightarrow w_1 + w_2 + 2b > w_1 + w_2 + b \Rightarrow 2b > b \Rightarrow b > 0
+\end{equation}
+
+Lo que contradice $b < 0$ de la ecuación (\ref{eq1}). Por tanto, \textbf{no existen} $w_1, w_2, b$ que satisfagan todas las condiciones simultáneamente.
+
+\subsection{Teorema de Minsky \& Papert (1969)} 
+
+En su libro \textit{Perceptrons} (1969), Marvin Minsky y Seymour Papert demostraron que:
+
+\begin{quote}
+``Un perceptrón de una sola capa solo puede calcular funciones que sean \textbf{linealmente separables}. La función XOR no es linealmente separable y por tanto no puede ser calculada por ningún perceptrón de una sola capa.''
+\end{quote}
+
+\textbf{Definición Formal de Separabilidad Lineal:} Un conjunto de puntos $\{(x_1^{(i)}, x_2^{(i)})\}_{i=1}^n$ con etiquetas $y_i \in \{0,1\}$ es \textbf{linealmente separable} si existe un hiperplano:
+
+\begin{equation}
+w_1x_1 + w_2x_2 + b = 0
+\end{equation}
+
+tal que:
+
+\begin{equation}
+\begin{cases}
+w_1x_1^{(i)} + w_2x_2^{(i)} + b \geq 0 & \text{si } y_i = 1 \\
+w_1x_1^{(i)} + w_2x_2^{(i)} + b < 0 & \text{si } y_i = 0
+\end{cases}
+\end{equation}
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\textwidth]{xor_plot.png}
+\caption{La función XOR no es linealmente separable. No existe línea recta que separe los puntos (0,0) y (1,1) de (0,1) y (1,0).}
+\end{figure}
+
+Los puntos $(0,0)$ y $(1,1)$ (clase 0) están en una diagonal, mientras que $(0,1)$ y $(1,0)$ (clase 1) están en la diagonal opuesta. \textbf{No existe ninguna línea recta} que pueda separar estas dos clases.
+
+\subsection{Consecuencias Históricas}
+
+Esta limitación fundamental, demostrada rigurosamente por Minsky y Papert, tuvo consecuencias significativas:
+
+\begin{itemize}
+\item Mostró las limitaciones teóricas de los perceptrones simples
+\item Llevó a una reducción en la financiación para investigación en redes neuronales
+\item Marcó el inicio del primer \"invierno de la IA\" (AI winter)
+\item Desvió la investigación hacia otros paradigmas como los sistemas expertos
+\end{itemize}
+
+\subsection{Solución: Perceptrones Multicapa}
+
+La función XOR \textbf{SÍ puede ser calculada} por un perceptrón con \textbf{al menos una capa oculta}:
+
+\begin{align}
+h_1 &= \sigma(w_{11}x_1 + w_{12}x_2 + b_1) \\
+h_2 &= \sigma(w_{21}x_1 + w_{22}x_2 + b_2) \\
+y &= \sigma(v_1h_1 + v_2h_2 + c)
+\end{align}
+
+Con una elección adecuada de parámetros, esta red de 2 capas puede implementar XOR.
+
+\begin{example} Una solución posible con funciones de activación apropiadas:
+
+\begin{align}
+h_1 &= \text{ReLU}(x_1 - x_2 - 0.5) \\
+h_2 &= \text{ReLU}(-x_1 + x_2 - 0.5) \\
+y &= \text{Sigmoide}(h_1 + h_2 - 0.5)
+\end{align}
+
+Alternativamente usando Álgebra Lineal se obtiene que:
+
+
+\begin{equation}
+\mathbf{X} = \begin{bmatrix}
+1 & 0 & 0 \\
+1 & 0 & 1 \\
+1 & 1 & 0 \\
+1 & 1 & 1
+\end{bmatrix}, \quad 
+\mathbf{y} = \begin{bmatrix}
+0 \\ 1 \\ 1 \\ 0
+\end{bmatrix}
+\end{equation}
+
+Buscamos $\mathbf{w} = [b, w_1, w_2]^T$ tal que:
+
+\begin{equation}
+\text{sign}(\mathbf{X}\mathbf{w}) = \mathbf{y}
+\end{equation}
+\end{example}
+\textbf{Teorema de Separabilidad} Este teorema fundamental del álgebra lineal establece que un conjunto de puntos es linealmente separable si y solo si los vectores de una clase no están en el casco convexo de los vectores de la otra clase.
+
+Para XOR, los puntos de clase 1, $(0,1)$ y $(1,0)$, forman un segmento cuyo casco convexo intersecta con el casco convexo de la clase 0, $(0,0)$ y $(1,1)$.
+
+
+\subsection{Teorema de Minsky-Papert Generalizado}
+
+Para $n$ variables binarias, el número de funciones booleanas linealmente separables es aproximadamente $2^{n^2}$, mientras que el número total de funciones booleanas es $2^{2^n}$. Por tanto:
+
+\begin{equation}
+\lim_{n \to \infty} \frac{\text{Funciones linealmente separables}}{\text{Total de funciones}} = 0
+\end{equation}
+
+Las funciones que un perceptrón puede calcular se denominan \textbf{funciones de umbral}. XOR no es una función de umbral, pero puede expresarse como combinación de funciones de umbral:
+
+\begin{equation}
+\text{XOR}(x_1,x_2) = \text{OR}(x_1,x_2) \land \text{NAND}(x_1,x_2)
+\end{equation}
+
+\subsection{Conclusión  hasta este punto}
+
+La demostración de Minsky y Papert sobre la incapacidad del perceptrón para aprender XOR representa un hito fundamental en la historia de la inteligencia artificial. Esta limitación teórica:
+
+\begin{itemize}
+\item Estableció claramente las capacidades y limitaciones de los modelos lineales
+\item Motivó el desarrollo de arquitecturas más complejas (redes multicapa)
+\item Proporcionó un entendimiento profundo de la separabilidad lineal
+\item Sigue siendo un ejemplo pedagógico fundamental en machine learning
+\end{itemize}
+
+La función XOR se mantiene como el ejemplo canónico de un problema simple pero no linealmente separable, demostrando la necesidad de no linealidades y capas ocultas en los modelos de redes neuronales modernos.
+
+\section{Elementos Básicos de las Neuronas Artificiales}
+
+\subsection{Funciones de Activación}
+
+Las funciones de activación son componentes fundamentales en las redes neuronales que introducen no linealidades en el modelo, permitiendo capturar relaciones complejas en los datos. Matemáticamente, una función de activación $\sigma: \mathbb{R} \rightarrow \mathbb{R}$ transforma la combinación lineal de entradas $z=\mathbf{w}^T \mathbf{x}+b$ en una salida no lineal $a=\sigma(z)$, rompiendo la linealidad que limitaría la capacidad representacional de la red. La elección de la función de activación impacta críticamente en la capacidad de aprendizaje, ya que determina los gradientes que fluyen durante la retropropagación mediante su derivada $\sigma^{\prime}(z)$. 
+
+\subsubsection{Función ReLU (Rectified Linear Unit)}
+\begin{equation}
+\sigma(z) = \max(0, z) = 
+\begin{cases} 
+z & \text{si } z > 0 \\
+0 & \text{en caso contrario}
+\end{cases}
+\end{equation}
+
+\textbf{Derivada:} $\sigma'(z) = 
+\begin{cases} 
+1 & \text{si } z > 0 \\
+0 & \text{en caso contrario}
+\end{cases}$
+
+\subsubsection{Función Sigmoide}
+\begin{equation}
+\sigma(z) = \frac{1}{1 + e^{-z}}
+\end{equation}
+
+\textbf{Derivada:} $\sigma'(z) = \sigma(z)(1 - \sigma(z))$
+
+\subsubsection{Función Tangente Hiperbólica}
+\begin{equation}
+\sigma(z) = \tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}
+\end{equation}
+
+\textbf{Derivada:} $\sigma'(z) = 1 - \tanh^2(z)$
+
+\begin{itemize}
+\item Funciones como $\operatorname{ReLU}(\sigma(z)=\max (0, z))$ son preferidas en capas ocultas por su eficiencia computacional y mitigación del problema de gradientes vanishing, aunque sufren del "problema de neuronas muertas" cuando $z \leq 0$. 
+\item Alternativas como Leaky ReLU ( $\sigma(z)=\max (\alpha z, z) \operatorname{con} \alpha \ll 1$ ) resuelven este issue permitiendo un pequeño gradiente negativo. 
+\item Para la capa de salida en problemas de regresión, se emplea comúnmente la función identidad $(\sigma(z)=z)$ que preserva el rango continuo de salidas, mientras que en clasificación binaria la función sigmoide $\left(\sigma(z)=\left(1+e^{-z}\right)^{-1}\right.$ ) comprime las salidas al intervalo $(0,1)$ interpretable como probabilidades. 
+\item La derivabilidad de estas funciones es esencial para el descenso de gradiente, donde propiedades como la monotonicidad y continuidad aseguran estabilidad en el entrenamiento.
+\end{itemize}
+
+\section{Arquitectura de una Red Neuronal Feedforward}
+
+
+Una red neuronal con $L$ capas se define como:
+
+\begin{align}
+\mathbf{a}^{[0]} &= \mathbf{x} \quad \text{(capa de entrada)} \\
+\mathbf{z}^{[l]} &= \mathbf{W}^{[l]} \mathbf{a}^{[l-1]} + \mathbf{b}^{[l]} \quad \text{para } l = 1, \dots, L \\
+\mathbf{a}^{[l]} &= \sigma^{[l]}(\mathbf{z}^{[l]}) \quad \text{para } l = 1, \dots, L-1 \\
+\mathbf{a}^{[L]} &= \mathbf{z}^{[L]} \quad \text{(capa de salida para regresión)}
+\end{align}
+
+donde:
+\begin{itemize}
+\item $\mathbf{W}^{[l]}$ es la matriz de pesos de la capa $l$
+\item $\mathbf{b}^{[l]}$ es el vector de bias de la capa $l$
+\item $\sigma^{[l]}$ es la función de activación de la capa $l$
+\end{itemize}
+
+\subsection{Ejemplo: Red con 2 Capas Ocultas}
+
+Consideremos una red neuronal con la siguiente arquitectura $4 \to 64 \to 32 \to 1$:
+
+\begin{align}
+\mathbf{z}^{[1]} &= \mathbf{W}^{[1]}_{64 \times 4} \mathbf{x}_{4 \times 1} + \mathbf{b}^{[1]}_{64 \times 1} \\
+\mathbf{a}^{[1]} &= \text{ReLU}(\mathbf{z}^{[1]}) \\
+\mathbf{z}^{[2]} &= \mathbf{W}^{[2]}_{32 \times 64} \mathbf{a}^{[1]}_{64 \times 1} + \mathbf{b}^{[2]}_{32 \times 1} \\
+\mathbf{a}^{[2]} &= \text{ReLU}(\mathbf{z}^{[2]}) \\
+\mathbf{z}^{[3]} &= \mathbf{W}^{[3]}_{1 \times 32} \mathbf{a}^{[2]}_{32 \times 1} + \mathbf{b}^{[3]}_{1 \times 1} \\
+\hat{y} &= \mathbf{z}^{[3]} \quad \text{(predicción final)}
+\end{align}
+
+De manera detallada esto se desglosa así:
+
+\begin{itemize}
+\item \textbf{Capa de entrada}: 4 neuronas (features)
+\item \textbf{Capa oculta 1}: 64 neuronas con activación ReLU
+\item \textbf{Capa oculta 2}: 32 neuronas con activación ReLU  
+\item \textbf{Capa de salida}: 1 neurona (sin activación para regresión)
+\end{itemize}
+
+El conocido como Forward Pass Matricial, contiene la siguientes definición de las dimensiones
+
+\begin{align}
+\mathbf{x} &\in \mathbb{R}^{4 \times 1} \quad \text{(vector de entrada)} \\
+\mathbf{W}^{[1]} &\in \mathbb{R}^{64 \times 4} \quad \text{(pesos capa 1)} \\
+\mathbf{b}^{[1]} &\in \mathbb{R}^{64 \times 1} \quad \text{(bias capa 1)} \\
+\mathbf{W}^{[2]} &\in \mathbb{R}^{32 \times 64} \quad \text{(pesos capa 2)} \\
+\mathbf{b}^{[2]} &\in \mathbb{R}^{32 \times 1} \quad \text{(bias capa 2)} \\
+\mathbf{W}^{[3]} &\in \mathbb{R}^{1 \times 32} \quad \text{(pesos capa 3)} \\
+\mathbf{b}^{[3]} &\in \mathbb{R}^{1 \times 1} \quad \text{(bias capa 3)}
+\end{align}
+
+Ahora veamos paso por paso la construcción de la arquitectura de la red neuronal.
+
+\subsection{Paso 1: Capa Oculta 1}
+
+\begin{align}
+\mathbf{z}^{[1]} &= \mathbf{W}^{[1]}_{64 \times 4} \cdot \mathbf{x}_{4 \times 1} + \mathbf{b}^{[1]}_{64 \times 1} \\
+\mathbf{z}^{[1]} &\in \mathbb{R}^{64 \times 1} \\
+\mathbf{a}^{[1]} &= \text{ReLU}(\mathbf{z}^{[1]}) = \max(0, \mathbf{z}^{[1]}) \\
+\mathbf{a}^{[1]} &\in \mathbb{R}^{64 \times 1}
+\end{align}
+
+\textbf{Desarrollo explícito:}
+\begin{equation}
+\begin{bmatrix}
+z^{[1]}_1 \\ z^{[1]}_2 \\ \vdots \\ z^{[1]}_{64}
+\end{bmatrix}
+=
+\begin{bmatrix}
+w^{[1]}_{11} & w^{[1]}_{12} & w^{[1]}_{13} & w^{[1]}_{14} \\
+w^{[1]}_{21} & w^{[1]}_{22} & w^{[1]}_{23} & w^{[1]}_{24} \\
+\vdots & \vdots & \vdots & \vdots \\
+w^{[1]}_{64,1} & w^{[1]}_{64,2} & w^{[1]}_{64,3} & w^{[1]}_{64,4}
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+x_1 \\ x_2 \\ x_3 \\ x_4
+\end{bmatrix}
++
+\begin{bmatrix}
+b^{[1]}_1 \\ b^{[1]}_2 \\ \vdots \\ b^{[1]}_{64}
+\end{bmatrix}
+\end{equation}
+
+\subsection{Paso 2: Capa Oculta 2}
+
+\begin{align}
+\mathbf{z}^{[2]} &= \mathbf{W}^{[2]}_{32 \times 64} \cdot \mathbf{a}^{[1]}_{64 \times 1} + \mathbf{b}^{[2]}_{32 \times 1} \\
+\mathbf{z}^{[2]} &\in \mathbb{R}^{32 \times 1} \\
+\mathbf{a}^{[2]} &= \text{ReLU}(\mathbf{z}^{[2]}) = \max(0, \mathbf{z}^{[2]}) \\
+\mathbf{a}^{[2]} &\in \mathbb{R}^{32 \times 1}
+\end{align}
+
+\textbf{Desarrollo explícito:}
+\begin{equation}
+\begin{bmatrix}
+z^{[2]}_1 \\ z^{[2]}_2 \\ \vdots \\ z^{[2]}_{32}
+\end{bmatrix}
+=
+\begin{bmatrix}
+w^{[2]}_{11} & w^{[2]}_{12} & \cdots & w^{[2]}_{1,64} \\
+w^{[2]}_{21} & w^{[2]}_{22} & \cdots & w^{[2]}_{2,64} \\
+\vdots & \vdots & \ddots & \vdots \\
+w^{[2]}_{32,1} & w^{[2]}_{32,2} & \cdots & w^{[2]}_{32,64}
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+a^{[1]}_1 \\ a^{[1]}_2 \\ \vdots \\ a^{[1]}_{64}
+\end{bmatrix}
++
+\begin{bmatrix}
+b^{[2]}_1 \\ b^{[2]}_2 \\ \vdots \\ b^{[2]}_{32}
+\end{bmatrix}
+\end{equation}
+
+\subsection{Paso 3: Capa de Salida}
+
+\begin{align}
+\mathbf{z}^{[3]} &= \mathbf{W}^{[3]}_{1 \times 32} \cdot \mathbf{a}^{[2]}_{32 \times 1} + \mathbf{b}^{[3]}_{1 \times 1} \\
+\mathbf{z}^{[3]} &\in \mathbb{R}^{1 \times 1} \\
+\hat{y} &= z^{[3]} \quad \text{(sin función de activación para regresión)}
+\end{align}
+
+\textbf{Desarrollo explícito:}
+\begin{equation}
+\hat{y} =
+\begin{bmatrix}
+w^{[3]}_{11} & w^{[3]}_{12} & \cdots & w^{[3]}_{1,32}
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+a^{[2]}_1 \\ a^{[2]}_2 \\ \vdots \\ a^{[2]}_{32}
+\end{bmatrix}
++ b^{[3]}
+\end{equation}
+
+Ahora veamos el conocido como \textbf{Backward Pass Matricial} o retropropagación, en donde se analizan la \textbf{función de Pérdida y los gradientes Iniciales}. Para esto consideremos la función de pérdida MSE para un batch de $m$ ejemplos:
+
+\begin{align}
+\mathcal{L} &= \frac{1}{m} \sum_{i=1}^m (\hat{y}^{(i)} - y^{(i)})^2 \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[3]}} &= \frac{2}{m} (\hat{\mathbf{Y}} - \mathbf{Y}) \quad \text{donde } \hat{\mathbf{Y}}, \mathbf{Y} \in \mathbb{R}^{1 \times m}
+\end{align}
+
+\subsection{Gradientes Capa de Salida (L = 3)}
+
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[3]}} &= \frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[3]}} \cdot (\mathbf{A}^{[2]})^T \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[3]}} &\in \mathbb{R}^{1 \times 32} \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[3]}} &= \sum_{i=1}^m \frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[3]}} \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[3]}} &\in \mathbb{R}^{1 \times 1}
+\end{align}
+
+\textbf{Desarrollo dimensional:}
+\begin{equation}
+\underbrace{\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[3]}}}_{1 \times 32} = \underbrace{\frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[3]}}}_{1 \times m} \cdot \underbrace{(\mathbf{A}^{[2]})^T}_{m \times 32}
+\end{equation}
+
+\subsection{Propagación a Capa Oculta 2}
+
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial \mathbf{A}^{[2]}} &= (\mathbf{W}^{[3]})^T \cdot \frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[3]}} \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{A}^{[2]}} &\in \mathbb{R}^{32 \times m} \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[2]}} &= \frac{\partial \mathcal{L}}{\partial \mathbf{A}^{[2]}} \odot \text{ReLU}'(\mathbf{Z}^{[2]}) \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[2]}} &\in \mathbb{R}^{32 \times m}
+\end{align}
+
+Donde $\text{ReLU}'(z) = \begin{cases} 1 & \text{si } z > 0 \\ 0 & \text{si } z \leq 0 \end{cases}$ y $\odot$ es el producto Hadamard.
+
+\subsection{Gradientes Capa Oculta 2}
+
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[2]}} &= \frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[2]}} \cdot (\mathbf{A}^{[1]})^T \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[2]}} &\in \mathbb{R}^{32 \times 64} \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[2]}} &= \sum_{i=1}^m \frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[2]}} \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[2]}} &\in \mathbb{R}^{32 \times 1}
+\end{align}
+
+\subsection{Propagación a Capa Oculta 1}
+
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial \mathbf{A}^{[1]}} &= (\mathbf{W}^{[2]})^T \cdot \frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[2]}} \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{A}^{[1]}} &\in \mathbb{R}^{64 \times m} \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[1]}} &= \frac{\partial \mathcal{L}}{\partial \mathbf{A}^{[1]}} \odot \text{ReLU}'(\mathbf{Z}^{[1]}) \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[1]}} &\in \mathbb{R}^{64 \times m}
+\end{align}
+
+\subsection{Gradientes Capa Oculta 1}
+
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[1]}} &= \frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[1]}} \cdot \mathbf{X}^T \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[1]}} &\in \mathbb{R}^{64 \times 4} \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[1]}} &= \sum_{i=1}^m \frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[1]}} \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[1]}} &\in \mathbb{R}^{64 \times 1}
+\end{align}
+
+\section{Actualización de Parámetros}
+
+Usando descenso de gradiente con tasa de aprendizaje $\alpha$:
+
+\begin{align}
+\mathbf{W}^{[3]} &:= \mathbf{W}^{[3]} - \alpha \frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[3]}} \\
+\mathbf{b}^{[3]} &:= \mathbf{b}^{[3]} - \alpha \frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[3]}} \\
+\mathbf{W}^{[2]} &:= \mathbf{W}^{[2]} - \alpha \frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[2]}} \\
+\mathbf{b}^{[2]} &:= \mathbf{b}^{[2]} - \alpha \frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[2]}} \\
+\mathbf{W}^{[1]} &:= \mathbf{W}^{[1]} - \alpha \frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[1]}} \\
+\mathbf{b}^{[1]} &:= \mathbf{b}^{[1]} - \alpha \frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[1]}}
+\end{align}
+
+\newpage
+
+\section{Resumen de Flujo de Información}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Operación} & \textbf{Dimensión Entrada} & \textbf{Operador} & \textbf{Dimensión Salida} \\
+\midrule
+Forward Pass & & & \\
+$\mathbf{Z}^{[1]} = \mathbf{W}^{[1]}\mathbf{X} + \mathbf{b}^{[1]}$ & $\mathbb{R}^{4 \times m}$ & Matmul & $\mathbb{R}^{64 \times m}$ \\
+$\mathbf{A}^{[1]} = \text{ReLU}(\mathbf{Z}^{[1]})$ & $\mathbb{R}^{64 \times m}$ & Element-wise & $\mathbb{R}^{64 \times m}$ \\
+$\mathbf{Z}^{[2]} = \mathbf{W}^{[2]}\mathbf{A}^{[1]} + \mathbf{b}^{[2]}$ & $\mathbb{R}^{64 \times m}$ & Matmul & $\mathbb{R}^{32 \times m}$ \\
+$\mathbf{A}^{[2]} = \text{ReLU}(\mathbf{Z}^{[2]})$ & $\mathbb{R}^{32 \times m}$ & Element-wise & $\mathbb{R}^{32 \times m}$ \\
+$\mathbf{Z}^{[3]} = \mathbf{W}^{[3]}\mathbf{A}^{[2]} + \mathbf{b}^{[3]}$ & $\mathbb{R}^{32 \times m}$ & Matmul & $\mathbb{R}^{1 \times m}$ \\
+\midrule
+Backward Pass & & & \\
+$\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[3]}} = \frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[3]}}(\mathbf{A}^{[2]})^T$ & $\mathbb{R}^{1 \times m}$ & Matmul & $\mathbb{R}^{1 \times 32}$ \\
+$\frac{\partial \mathcal{L}}{\partial \mathbf{A}^{[2]}} = (\mathbf{W}^{[3]})^T\frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[3]}}$ & $\mathbb{R}^{1 \times m}$ & Matmul & $\mathbb{R}^{32 \times m}$ \\
+$\frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[2]}} = \frac{\partial \mathcal{L}}{\partial \mathbf{A}^{[2]}} \odot \text{ReLU}'(\mathbf{Z}^{[2]})$ & $\mathbb{R}^{32 \times m}$ & Hadamard & $\mathbb{R}^{32 \times m}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\section{Introducción a la Retropropagación Matricial}
+
+Dado que una vez que se ha aplicado un patrón a la entrada de la red como estímulo, este se propaga desde la primera capa a través de las capas siguientes de la red, hasta generar una salida. La señal de salida se compara con la salida deseada y se calcula una señal de error para cada una de las salidas. Las salidas de error entonces se propagan hacia atrás, partiendo de la capa de salida, hacia todas las neuronas de la capa oculta que contribuyen directamente a la salida. Sin embargo, las neuronas de la capa oculta solo reciben una fracción de la señal total del error, basándose aproximadamente en la contribución relativa que haya aportado cada neurona a la salida original. Este proceso se repite, capa por capa, hasta que todas las neuronas de la red hayan recibido una señal de error que describa su contribución relativa al error total.
+
+La importancia de este proceso consiste en que, a medida que se entrena la red, las neuronas de las capas intermedias se organizan a sí mismas de tal modo que las distintas neuronas aprenden a reconocer distintas características del espacio total de entrada. Después del entrenamiento, cuando se les presente un patrón arbitrario de entrada que contenga ruido o que esté incompleto, las neuronas de la capa oculta de la red responderán con una salida activa si la nueva entrada contiene un patrón que se asemeje a aquella característica que las neuronas individuales hayan aprendido a reconocer durante su entrenamiento.
+
+La retropropagación es el algoritmo fundamental para entrenar redes neuronales mediante descenso de gradiente. Su formulación matricial permite computar eficientemente los gradientes de todos los parámetros de la red.
+
+\begin{definition}
+  Para un batch de $m$ ejemplos, la función de pérdida MSE se define como:
+
+\begin{equation}
+\mathcal{L}(\mathbf{W}, \mathbf{b}) = \frac{1}{m} \sum_{i=1}^m \mathcal{L}^{(i)} = \frac{1}{m} \sum_{i=1}^m \frac{1}{2} (\hat{y}^{(i)} - y^{(i)})^2
+\end{equation}  
+\end{definition}
+
+Definiendo las matrices de predicciones y valores reales:
+
+\begin{align}
+\hat{\mathbf{Y}} &= [\hat{y}^{(1)}, \hat{y}^{(2)}, \dots, \hat{y}^{(m)}] \in \mathbb{R}^{1 \times m} \\
+\mathbf{Y} &= [y^{(1)}, y^{(2)}, \dots, y^{(m)}] \in \mathbb{R}^{1 \times m}
+\end{align}
+
+La función de pérdida se expresa matricialmente como:
+
+\begin{equation}
+\mathcal{L} = \frac{1}{2m} \|\hat{\mathbf{Y}} - \mathbf{Y}\|_F^2 = \frac{1}{2m} \text{tr}\left[(\hat{\mathbf{Y}} - \mathbf{Y})^T(\hat{\mathbf{Y}} - \mathbf{Y})\right]
+\end{equation}
+
+donde $\|\cdot\|_F$ es la norma de Frobenius y $\text{tr}[\cdot]$ es la traza de la matriz.
+
+\subsection{Gradientes Iniciales de la Capa de Salida}
+
+El siguiente paso es la derivación del Gradiente para MSE. Para la capa de salida $L$, tenemos:
+
+\begin{equation}
+\frac{\partial \mathcal{L}}{\partial \hat{\mathbf{Y}}} = \frac{1}{m} (\hat{\mathbf{Y}} - \mathbf{Y})
+\end{equation}
+
+\textbf{Demostración:}
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial \hat{y}^{(i)}} &= \frac{\partial}{\partial \hat{y}^{(i)}} \left[\frac{1}{2m} \sum_{j=1}^m (\hat{y}^{(j)} - y^{(j)})^2\right] \\
+&= \frac{1}{m} (\hat{y}^{(i)} - y^{(i)})
+\end{align}
+
+Por tanto, en forma matricial:
+
+\begin{equation}
+\frac{\partial \mathcal{L}}{\partial \hat{\mathbf{Y}}} = \frac{1}{m} (\hat{\mathbf{Y}} - \mathbf{Y}) \in \mathbb{R}^{1 \times m}
+\end{equation}
+
+Si lo que tenemos es una cadena de derivadas para la Capa de Salida. Para una red con $L$ capas, donde la capa de salida tiene activación lineal:
+
+\begin{align}
+\mathbf{Z}^{[L]} &= \mathbf{W}^{[L]} \mathbf{A}^{[L-1]} + \mathbf{b}^{[L]} \\
+\hat{\mathbf{Y}} &= \mathbf{Z}^{[L]}
+\end{align}
+
+Aplicando la regla de la cadena:
+
+\begin{equation}
+\frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[L]}} = \frac{\partial \mathcal{L}}{\partial \hat{\mathbf{Y}}} \cdot \frac{\partial \hat{\mathbf{Y}}}{\partial \mathbf{Z}^{[L]}} = \frac{1}{m} (\hat{\mathbf{Y}} - \mathbf{Y})
+\end{equation}
+
+donde $\frac{\partial \hat{\mathbf{Y}}}{\partial \mathbf{Z}^{[L]}} = \mathbf{I}$ (matriz identidad).
+
+\subsection{Notación y Convenciones para el Backward Pass}
+
+Definimos $\boldsymbol{\delta}^{[l]}$ como el gradiente de la pérdida con respecto a $\mathbf{Z}^{[l]}$:
+
+\begin{equation}
+\boldsymbol{\delta}^{[l]} = \frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[l]}} \in \mathbb{R}^{n_l \times m}
+\end{equation}
+
+donde $n_l$ es el número de neuronas en la capa $l$.
+
+Para un batch completo, las matrices de activaciones serán:
+
+\begin{align}
+\mathbf{A}^{[l]} &= [\mathbf{a}^{[l](1)}, \mathbf{a}^{[l](2)}, \dots, \mathbf{a}^{[l](m)}] \in \mathbb{R}^{n_l \times m} \\
+\mathbf{Z}^{[l]} &= [\mathbf{z}^{[l](1)}, \mathbf{z}^{[l](2)}, \dots, \mathbf{z}^{[l](m)}] \in \mathbb{R}^{n_l \times m}
+\end{align}
+
+ahora detallemos la derivación completa de los Gradientes
+
+\begin{itemize}
+    \item \textbf{Gradientes de los Pesos.} Para cualquier capa $l$, tenemos:
+%
+\begin{align}
+\mathbf{Z}^{[l]} &= \mathbf{W}^{[l]} \mathbf{A}^{[l-1]} + \mathbf{b}^{[l]} \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[l]}} &= \frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[l]}} \cdot \frac{\partial \mathbf{Z}^{[l]}}{\partial \mathbf{W}^{[l]}} = \boldsymbol{\delta}^{[l]} (\mathbf{A}^{[l-1]})^T
+\end{align}
+%
+\textbf{Demostración:} Consideremos un elemento individual $w_{jk}^{[l]}$:
+
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial w_{jk}^{[l]}} &= \sum_{i=1}^m \frac{\partial \mathcal{L}}{\partial z_{j}^{[l](i)}} \cdot \frac{\partial z_{j}^{[l](i)}}{\partial w_{jk}^{[l]}} \\
+&= \sum_{i=1}^m \delta_{j}^{[l](i)} \cdot a_{k}^{[l-1](i)}
+\end{align}
+%
+En forma matricial, esto corresponde a:
+%
+\begin{equation}
+\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[l]}} = \boldsymbol{\delta}^{[l]} (\mathbf{A}^{[l-1]})^T.
+\end{equation}
+%
+\item Gradientes de los Bias
+%
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[l]}} &= \sum_{i=1}^m \frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[l](i)}} = \boldsymbol{\delta}^{[l]} \mathbf{1}_m
+\end{align}
+%
+donde $\mathbf{1}_m = [1, 1, \dots, 1]^T \in \mathbb{R}^{m \times 1}$.
+
+\textbf{Demostración:}
+%
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial b_j^{[l]}} &= \sum_{i=1}^m \frac{\partial \mathcal{L}}{\partial z_j^{[l](i)}} \cdot \frac{\partial z_j^{[l](i)}}{\partial b_j^{[l]}} \\
+&= \sum_{i=1}^m \delta_j^{[l](i)} \cdot 1 = \sum_{i=1}^m \delta_j^{[l](i)}
+\end{align}
+\end{itemize}
+\subsection{Propagación hacia Atrás de los Deltas}
+
+Para propagar $\boldsymbol{\delta}^{[l]}$ a $\boldsymbol{\delta}^{[l-1]}$:
+
+\begin{align}
+\boldsymbol{\delta}^{[l-1]} &= \frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[l-1]}} \\
+&= \frac{\partial \mathcal{L}}{\partial \mathbf{A}^{[l-1]}} \odot \frac{\partial \mathbf{A}^{[l-1]}}{\partial \mathbf{Z}^{[l-1]}} \\
+&= \left[(\mathbf{W}^{[l]})^T \boldsymbol{\delta}^{[l]}\right] \odot g^{[l-1]'}(\mathbf{Z}^{[l-1]})
+\end{align}
+
+Veamos la derivación detallada de este proceso:
+
+Paso 1: Gradiente con respecto a $\mathbf{A}^{[l-1]}$:
+
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial \mathbf{A}^{[l-1]}} &= \frac{\partial \mathcal{L}}{\partial \mathbf{Z}^{[l]}} \cdot \frac{\partial \mathbf{Z}^{[l]}}{\partial \mathbf{A}^{[l-1]}} \\
+&= \boldsymbol{\delta}^{[l]} \cdot \frac{\partial}{\partial \mathbf{A}^{[l-1]}} \left[\mathbf{W}^{[l]} \mathbf{A}^{[l-1]} + \mathbf{b}^{[l]}\right] \\
+&= (\mathbf{W}^{[l]})^T \boldsymbol{\delta}^{[l]}
+\end{align}
+
+Paso 2: Aplicar derivada de la función de activación:
+
+\begin{align}
+\boldsymbol{\delta}^{[l-1]} &= \frac{\partial \mathcal{L}}{\partial \mathbf{A}^{[l-1]}} \odot g^{[l-1]'}(\mathbf{Z}^{[l-1]}) \\
+&= \left[(\mathbf{W}^{[l]})^T \boldsymbol{\delta}^{[l]}\right] \odot g^{[l-1]'}(\mathbf{Z}^{[l-1]})
+\end{align}
+
+
+
+
+
+\section{Algoritmo Completo de Retropropagación}
+
+\subsection{Pseudocódigo Matricial}
+
+\begin{algorithmic}
+\Require Batch $\mathbf{X} \in \mathbb{R}^{n_0 \times m}$, $\mathbf{Y} \in \mathbb{R}^{n_L \times m}$
+\Ensure Gradientes $\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[l]}}$, $\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[l]}}$ para $l = 1, \dots, L$
+\State // Forward pass
+\For{$l = 1$ to $L$}
+    \State $\mathbf{Z}^{[l]} \gets \mathbf{W}^{[l]} \mathbf{A}^{[l-1]} + \mathbf{b}^{[l]}$
+    \State $\mathbf{A}^{[l]} \gets g^{[l]}(\mathbf{Z}^{[l]})$
+\EndFor
+\State $\hat{\mathbf{Y}} \gets \mathbf{A}^{[L]}$
+\State $\mathcal{L} \gets \frac{1}{2m} \|\hat{\mathbf{Y}} - \mathbf{Y}\|_F^2$
+
+\State // Backward pass
+\State $\boldsymbol{\delta}^{[L]} \gets \frac{1}{m} (\hat{\mathbf{Y}} - \mathbf{Y}) \odot g^{[L]'}(\mathbf{Z}^{[L]})$
+\For{$l = L-1$ down to $1$}
+    \State $\boldsymbol{\delta}^{[l]} \gets \left[(\mathbf{W}^{[l+1]})^T \boldsymbol{\delta}^{[l+1]}\right] \odot g^{[l]'}(\mathbf{Z}^{[l]})$
+\EndFor
+
+\State // Calcular gradientes
+\For{$l = 1$ to $L$}
+    \State $\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[l]}} \gets \boldsymbol{\delta}^{[l]} (\mathbf{A}^{[l-1]})^T$
+    \State $\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[l]}} \gets \boldsymbol{\delta}^{[l]} \mathbf{1}_m$
+\EndFor
+\end{algorithmic}
+
+\section{Ejemplo Numérico con Dos Capas Ocultas}
+
+Consideremos una red con arquitectura $2 \to 3 \to 2 \to 1$:
+
+\begin{align}
+n_0 &= 2, \quad n_1 = 3, \quad n_2 = 2, \quad n_3 = 1 \\
+m &= 4 \quad \text{(tamaño del batch)}
+\end{align}
+
+\subsection{Forward Pass}
+
+\begin{align}
+\mathbf{Z}^{[1]} &= \mathbf{W}^{[1]}_{3 \times 2} \mathbf{X}_{2 \times 4} + \mathbf{b}^{[1]}_{3 \times 4} \\
+\mathbf{A}^{[1]} &= \text{ReLU}(\mathbf{Z}^{[1]}) \\
+\mathbf{Z}^{[2]} &= \mathbf{W}^{[2]}_{2 \times 3} \mathbf{A}^{[1]}_{3 \times 4} + \mathbf{b}^{[2]}_{2 \times 4} \\
+\mathbf{A}^{[2]} &= \text{ReLU}(\mathbf{Z}^{[2]}) \\
+\mathbf{Z}^{[3]} &= \mathbf{W}^{[3]}_{1 \times 2} \mathbf{A}^{[2]}_{2 \times 4} + \mathbf{b}^{[3]}_{1 \times 4} \\
+\hat{\mathbf{Y}} &= \mathbf{Z}^{[3]}
+\end{align}
+
+\subsection{Backward Pass Detallado}
+
+\begin{align}
+\boldsymbol{\delta}^{[3]} &= \frac{1}{4} (\hat{\mathbf{Y}}_{1 \times 4} - \mathbf{Y}_{1 \times 4}) \quad \text{(activación lineal)} \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[3]}} &= \boldsymbol{\delta}^{[3]}_{1 \times 4} (\mathbf{A}^{[2]}_{2 \times 4})^T = \text{matriz } 1 \times 2 \\
+\boldsymbol{\delta}^{[2]} &= \left[(\mathbf{W}^{[3]}_{1 \times 2})^T \boldsymbol{\delta}^{[3]}_{1 \times 4}\right] \odot \text{ReLU}'(\mathbf{Z}^{[2]}_{2 \times 4}) \\
+&= \text{matriz } 2 \times 4 \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[2]}} &= \boldsymbol{\delta}^{[2]}_{2 \times 4} (\mathbf{A}^{[1]}_{3 \times 4})^T = \text{matriz } 2 \times 3
+\end{align}
+
+\section{Propiedades Matemáticas Importantes}
+
+\subsection{Conservación de Dimensionalidad}
+
+En cada paso de la retropropagación, se mantienen las dimensiones:
+
+\begin{align}
+\boldsymbol{\delta}^{[l]} &\in \mathbb{R}^{n_l \times m} \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[l]}} &\in \mathbb{R}^{n_l \times n_{l-1}} \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[l]}} &\in \mathbb{R}^{n_l \times 1}
+\end{align}
+
+\subsection{Eficiencia Computacional}
+
+La formulación matricial permite:
+
+\begin{itemize}
+\item Operaciones altamente paralelizables en GPU
+\item Complejidad $\mathcal{O}(m \cdot \sum_{l=1}^L n_l n_{l-1})$
+\item Reutilización de resultados del forward pass
+\end{itemize}
+
+
+
+\end{document}
+
+\section{Conteo de Parámetros}
+
+El número total de parámetros entrenables es:
+
+\begin{align}
+\text{Capa 1:} & \quad 64 \times 4 + 64 = 256 + 64 = 320 \\
+\text{Capa 2:} & \quad 32 \times 64 + 32 = 2048 + 32 = 2080 \\
+\text{Capa 3:} & \quad 1 \times 32 + 1 = 32 + 1 = 33 \\
+\text{Total:} & \quad 320 + 2080 + 33 = 2433 \text{ parámetros}
+\end{align}
+\section{Función de Pérdida para Problemas de Regresión}
+
+\subsection{Error Cuadrático Medio (MSE)}
+
+Para un conjunto de datos $\{(\mathbf{x}^{(i)}, y^{(i)})\}_{i=1}^m$, la función de pérdida MSE se define como:
+
+\begin{equation}
+\mathcal{L}(\mathbf{W}, \mathbf{b}) = \frac{1}{m} \sum_{i=1}^m \left(\hat{y}^{(i)} - y^{(i)}\right)^2 = \frac{1}{m} \sum_{i=1}^m \left(f(\mathbf{x}^{(i)}; \mathbf{W}, \mathbf{b}) - y^{(i)}\right)^2
+\end{equation}
+
+donde $\hat{y}^{(i)}$ es la predicción del modelo para la muestra $i$.
+
+\subsection{Forma Matricial}
+
+\begin{equation}
+\mathcal{L}(\mathbf{W}, \mathbf{b}) = \frac{1}{m} \|\hat{\mathbf{y}} - \mathbf{y}\|_2^2
+\end{equation}
+
+donde $\hat{\mathbf{y}} = [\hat{y}^{(1)}, \dots, \hat{y}^{(m)}]^T$ y $\mathbf{y} = [y^{(1)}, \dots, y^{(m)}]^T$.
+
+\section{Algoritmo de Aprendizaje: Descenso de Gradiente}
+
+\subsection{Actualización de Parámetros}
+
+El descenso de gradiente actualiza los parámetros iterativamente:
+
+\begin{align}
+\mathbf{W}^{[l]} &:= \mathbf{W}^{[l]} - \alpha \frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[l]}} \\
+\mathbf{b}^{[l]} &:= \mathbf{b}^{[l]} - \alpha \frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[l]}}
+\end{align}
+
+donde $\alpha$ es la tasa de aprendizaje.
+
+\subsection{Retropropagación (Backpropagation)}
+
+El algoritmo de retropropagación calcula eficientemente los gradientes mediante la regla de la cadena:
+
+\subsubsection{Gradientes de la Capa de Salida ($l = L$)}
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial \mathbf{z}^{[L]}} &= \frac{\partial \mathcal{L}}{\partial \hat{\mathbf{y}}} = \frac{2}{m}(\hat{\mathbf{y}} - \mathbf{y}) \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[L]}} &= \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{[L]}} (\mathbf{a}^{[L-1]})^T \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[L]}} &= \sum_{i=1}^m \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{[L]}}
+\end{align}
+
+\subsubsection{Propagación hacia Atrás ($l = L-1, \dots, 1$)}
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial \mathbf{a}^{[l]}} &= (\mathbf{W}^{[l+1]})^T \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{[l+1]}} \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{z}^{[l]}} &= \frac{\partial \mathcal{L}}{\partial \mathbf{a}^{[l]}} \odot \sigma^{[l]'}(\mathbf{z}^{[l]}) \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[l]}} &= \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{[l]}} (\mathbf{a}^{[l-1]})^T \\
+\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[l]}} &= \sum_{i=1}^m \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{[l]}}
+\end{align}
+
+donde $\odot$ denota el producto elemento a elemento (Hadamard product).
+
+\section{Optimizadores Avanzados}
+
+\subsection{Algoritmo Adam}
+
+Adam combina las ideas de Momentum y RMSProp:
+
+\begin{align}
+\mathbf{m}^{[l]} &= \beta_1 \mathbf{m}^{[l]} + (1 - \beta_1) \frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[l]}} \\
+\mathbf{v}^{[l]} &= \beta_2 \mathbf{v}^{[l]} + (1 - \beta_2) \left(\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[l]}}\right)^2 \\
+\hat{\mathbf{m}}^{[l]} &= \frac{\mathbf{m}^{[l]}}{1 - \beta_1^t} \\
+\hat{\mathbf{v}}^{[l]} &= \frac{\mathbf{v}^{[l]}}{1 - \beta_2^t} \\
+\mathbf{W}^{[l]} &:= \mathbf{W}^{[l]} - \alpha \frac{\hat{\mathbf{m}}^{[l]}}{\sqrt{\hat{\mathbf{v}}^{[l]}} + \epsilon}
+\end{align}
+
+donde $t$ es el número de iteración, $\beta_1 = 0.9$, $\beta_2 = 0.999$, $\epsilon = 10^{-8}$.
+
+\section{Preprocesamiento de Datos}
+
+\subsection{Estandarización (StandardScaler)}
+
+Para cada feature $x_j$:
+\begin{equation}
+x_j^{\text{scaled}} = \frac{x_j - \mu_j}{\sigma_j}
+\end{equation}
+donde $\mu_j$ es la media y $\sigma_j$ la desviación estándar del feature $j$.
+
+\subsection{Importancia Matemática del Escalado}
+
+El escalado acelera la convergencia porque:
+\begin{itemize}
+\item Evina que gradientes exploten o desaparezcan
+\item Permite usar tasas de aprendizaje más altas
+\item Mejora la condición numérica del problema de optimización
+\end{itemize}
+
+\section{Métricas de Evaluación para Regresión}
+
+\subsection{Error Cuadrático Medio (MSE)}
+\begin{equation}
+\text{MSE} = \frac{1}{m} \sum_{i=1}^m (y_i - \hat{y}_i)^2
+\end{equation}
+
+\subsection{Error Absoluto Medio (MAE)}
+\begin{equation}
+\text{MAE} = \frac{1}{m} \sum_{i=1}^m |y_i - \hat{y}_i|
+\end{equation}
+
+\subsection{Coeficiente de Determinación ($R^2$)}
+\begin{equation}
+R^2 = 1 - \frac{\sum_{i=1}^m (y_i - \hat{y}_i)^2}{\sum_{i=1}^m (y_i - \bar{y})^2}
+\end{equation}
+donde $\bar{y} = \frac{1}{m} \sum_{i=1}^m y_i$.
+
+\section{Ejemplo Completo: Forward Pass}
+
+Para una muestra $\mathbf{x} = [x_1, x_2, x_3, x_4]^T$ y red $4 \to 2 \to 1$:
+
+\subsection{Forward Pass}
+\begin{align}
+\mathbf{z}^{[1]} &= \begin{bmatrix} w_{11}^{[1]} & w_{12}^{[1]} & w_{13}^{[1]} & w_{14}^{[1]} \\ w_{21}^{[1]} & w_{22}^{[1]} & w_{23}^{[1]} & w_{24}^{[1]} \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \end{bmatrix} + \begin{bmatrix} b_1^{[1]} \\ b_2^{[1]} \end{bmatrix} \\
+\mathbf{a}^{[1]} &= \text{ReLU}(\mathbf{z}^{[1]}) = \begin{bmatrix} \max(0, z_1^{[1]}) \\ \max(0, z_2^{[1]}) \end{bmatrix} \\
+z^{[2]} &= \begin{bmatrix} w_{11}^{[2]} & w_{12}^{[2]} \end{bmatrix} \begin{bmatrix} a_1^{[1]} \\ a_2^{[1]} \end{bmatrix} + b^{[2]} \\
+\hat{y} &= z^{[2]}
+\end{align}
+
+\section{Consideraciones de Implementación}
+
+\subsection{Inicialización de Pesos}
+
+Para una capa con $n_{\text{in}}$ entradas y $n_{\text{out}}$ salidas:
+\begin{equation}
+\mathbf{W}^{[l]} \sim \mathcal{N}\left(0, \sqrt{\frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \quad \text{(He initialization)}
+\end{equation}
+
+\subsection{Función de Pérdida Regularizada}
+
+Para prevenir overfitting:
+\begin{equation}
+\mathcal{L}_{\text{reg}} = \mathcal{L} + \frac{\lambda}{2m} \sum_{l=1}^L \|\mathbf{W}^{[l]}\|_F^2
+\end{equation}
+donde $\lambda$ es el parámetro de regularización y $\|\cdot\|_F$ es la norma de Frobenius.
+
+\section{Conclusión}
+
+Los elementos matemáticos presentados proporcionan la base fundamental para construir y entender redes neuronales para predicción. La combinación de transformaciones lineales (pesos y bias) con no linealidades (funciones de activación), optimizada mediante descenso de gradiente con retropropagación, permite a las redes aprender relaciones complejas en los datos. La comprensión de estos fundamentos es esencial para el desarrollo efectivo de modelos de machine learning.
