@@ -37,7 +37,7 @@ nav.toc a{white-space:nowrap;text-decoration:none;color:var(--text);font-size:14
 nav.toc a:hover{background:var(--chip)}
 nav.toc input{flex:0 0 200px;width:200px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);
   background:var(--surface);color:var(--text);font:inherit;font-size:14px}
-main section{padding:40px 0 8px}
+main section{padding:40px 0 8px;scroll-margin-top:24px}
 h2{font-family:Georgia,"Times New Roman",serif;font-weight:600;font-size:28px;margin:0 0 6px}
 h3{font-size:18px;margin:32px 0 4px}
 .section-intro{color:var(--muted);margin:0 0 20px;max-width:70ch}
@@ -68,6 +68,8 @@ footer .wrap{padding-top:24px;padding-bottom:40px}
 .hidden{display:none !important}
 @media (max-width:600px){
   header.hero .wrap{padding-top:32px}
+  main section{scroll-margin-top:72px}
+  .card{scroll-margin-top:120px}
   nav.toc .wrap{flex-wrap:wrap}
   nav.toc .links{flex-basis:100%}
   nav.toc input{flex:1 1 100%;width:100%}

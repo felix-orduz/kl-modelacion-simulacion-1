@@ -11,4 +11,4 @@ Notas de este tema:
 - [Recetario de data cleaning (Word)](../../docs/notas/recetario-data-cleaning.docx)
 - [Ideas para mejorar el tutorial de pandas](../../docs/notas/ideas-para-mejorar-el-tutorial-de-pandas.docx)
 
-Vista renderizada en el sitio: <https://felix-orduz.github.io/kl-modelacion-simulacion-1/#02-preparacion-datos>
+Vista renderizada en el sitio: <https://felixorduz.dev/kl-modelacion-simulacion-1/#02-preparacion-datos>

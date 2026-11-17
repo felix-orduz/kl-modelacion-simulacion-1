@@ -18,4 +18,4 @@ Notas de este tema:
 - [Árboles de decisión: idea esencial](../../docs/notas/ejemplo-arbol-introductorio.pdf)
 - [Árboles de decisión: regresión y clasificación](../../docs/notas/arboles-decision.pdf)
 
-Vista renderizada en el sitio: <https://felix-orduz.github.io/kl-modelacion-simulacion-1/#04-clasificacion>
+Vista renderizada en el sitio: <https://felixorduz.dev/kl-modelacion-simulacion-1/#04-clasificacion>

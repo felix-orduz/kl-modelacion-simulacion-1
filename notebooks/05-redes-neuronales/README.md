@@ -12,4 +12,4 @@ Notas de este tema:
 
 - [Elementos matemáticos para una primera red neuronal](../../docs/notas/redes-neuronales.pdf)
 
-Vista renderizada en el sitio: <https://felix-orduz.github.io/kl-modelacion-simulacion-1/#05-redes-neuronales>
+Vista renderizada en el sitio: <https://felixorduz.dev/kl-modelacion-simulacion-1/#05-redes-neuronales>

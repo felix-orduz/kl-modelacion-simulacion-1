@@ -11,4 +11,4 @@ Notas de este tema:
 
 - [k-means](../../docs/notas/kmeans.pdf)
 
-Vista renderizada en el sitio: <https://felix-orduz.github.io/kl-modelacion-simulacion-1/#06-no-supervisado>
+Vista renderizada en el sitio: <https://felixorduz.dev/kl-modelacion-simulacion-1/#06-no-supervisado>

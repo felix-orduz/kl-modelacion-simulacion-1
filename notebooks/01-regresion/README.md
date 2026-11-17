@@ -18,4 +18,4 @@ Notas de este tema:
 - [Demostración matemática de las métricas RSE, R² y F](../../docs/notas/regresion-simple-metricas.pdf)
 - [Bondad de ajuste en modelos de regresión lineal](../../docs/notas/bondad-de-ajuste.pdf)
 
-Vista renderizada en el sitio: <https://felix-orduz.github.io/kl-modelacion-simulacion-1/#01-regresion>
+Vista renderizada en el sitio: <https://felixorduz.dev/kl-modelacion-simulacion-1/#01-regresion>

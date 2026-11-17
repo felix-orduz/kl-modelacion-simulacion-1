@@ -2,7 +2,7 @@
 
 Notebooks, código y notas del curso **Modelación y Simulación I** (Fundación Universitaria Konrad Lorenz, 2026-2), del profesor **John A. Arredondo**. Es una copia de todo lo que se publicó en el aula virtual, organizada por tema, para que siga disponible cuando el aula se cierre.
 
-**Sitio web:** <https://felix-orduz.github.io/kl-modelacion-simulacion-1/>
+**Sitio web:** <https://felixorduz.dev/kl-modelacion-simulacion-1/>
 
 ## Contenido
 
